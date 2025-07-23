@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://c7cu5dc32kwo8"]
+
+[ext_resource type="PackedScene" uid="uid://dkuix0sq70fce" path="res://Cenas/raytracing_camera_3d.tscn" id="1_rslbg"]
+[ext_resource type="PackedScene" uid="uid://ck5ka7rbifhki" path="res://Cenas/caixa.tscn" id="3_cpow6"]
+
+[node name="main" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.19187, 2.29999, 3.45)
+shadow_enabled = true
+
+[node name="Camera3D" parent="." instance=ExtResource("1_rslbg")]
+transform = Transform3D(0.866025, -0.12941, 0.482963, 2.78059e-08, 0.965926, 0.258819, -0.5, -0.224144, 0.836516, 0.865685, 0.7, 1.78284)
+
+[node name="Caixa" parent="." instance=ExtResource("3_cpow6")]
