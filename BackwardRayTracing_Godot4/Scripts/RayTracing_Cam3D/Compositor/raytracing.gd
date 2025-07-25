@@ -1,18 +1,31 @@
 class_name raytracing extends CompositorEffect
 
+## Definição do Shader
 var rd : RenderingDevice
 var shader : RID
 var pipeline : RID
-var comp := load("res://test.tres")
-var frame : float = 0.0
 
+## Acesso aos Recursos
+var comp := load("res://Scripts/RayTracing_Cam3D/Recursos/ray_data.tres")
+
+## Dados dos Recursos
+var accu_tex : RID = comp.accu_tex
+var spheres_buffer : RID = comp.spheres_buffer
+var triangle_buffer : RID = comp.triangle_buffer
+var mesh_buffer : RID = comp.mesh_buffer
+
+# Buffers a serem criados
+
+
+## Dados Auxiliares
+var frame : float = 0.0
 @export var Acumular : bool
 
 func _init() -> void:
 	comp._reset_state()
 	RenderingServer.call_on_render_thread(initialize_compute_shader)
 
-#Método executado a todo sinal de notificação recebido (existe 3 tipos)
+## Método executado a todo sinal de notificação recebido
 func _notification(what: int) -> void:
 	# Notificação quanto objeto estiver prestes a ser deletado
 	if what == NOTIFICATION_PREDELETE and shader.is_valid():
@@ -20,7 +33,7 @@ func _notification(what: int) -> void:
 		#Pipeline é liberdo junto com shader
 		rd.free_rid(shader)
 
-#Definer dados para GPU por frame
+## Definer dados para GPU a cada frame
 func _render_callback(_effect_callback_type: int, render_data: RenderData) -> void:
 	if not rd: return
 	
@@ -37,8 +50,8 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 		var size : Vector2i = scene_buffers.get_internal_size()
 		if size.x == 0 or size.y == 0: return
 		
-		var x_group : int = size.x / 16 + 1
-		var y_group : int = size.y / 16 + 1 
+		var x_group : int = int(ceil(size.x / 8.0))
+		var y_group : int = int(ceil(size.y / 8.0))
 		
 		#Acesso à Origem e Matrix de Transformação da Camera3D
 		var origin : Vector3
@@ -50,7 +63,7 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 		#Informações de Visualização da Camera3D
 		var aspect : float = scene_proj.get_aspect()
 		var near : float = scene_proj.get_z_near()
-		var fov_y : float = scene_proj.get_fovy(scene_proj.get_fov(), 1/aspect)
+		var fov_y : float = Projection.get_fovy(scene_proj.get_fov(), 1/aspect)
 		var altura_plano : float = near * tan(deg_to_rad(fov_y * 0.5)) * 2.0
 		var largura_plano : float = altura_plano * aspect
 		
@@ -71,7 +84,7 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 		var accumulation_image_uniform := RDUniform.new()
 		accumulation_image_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_IMAGE
 		accumulation_image_uniform.binding = 1
-		accumulation_image_uniform.add_id(comp.accu_tex)
+		accumulation_image_uniform.add_id(accu_tex)
 		
 		#Buffer da Camera
 		var cam_data : PackedByteArray
@@ -99,19 +112,19 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 		var spheres_uniform := RDUniform.new()
 		spheres_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
 		spheres_uniform.binding = 4
-		spheres_uniform.add_id(comp.spheres_buffer)
+		spheres_uniform.add_id(spheres_buffer)
 		
 		#Buffer dos Triângulos
 		var triangle_uniform := RDUniform.new()
 		triangle_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
 		triangle_uniform.binding = 5
-		triangle_uniform.add_id(comp.triangle_buffer)
+		triangle_uniform.add_id(triangle_buffer)
 		
 		#Buffer das Mesh
 		var mesh_uniform := RDUniform.new()
 		mesh_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
 		mesh_uniform.binding = 6
-		mesh_uniform.add_id(comp.mesh_buffer)
+		mesh_uniform.add_id(mesh_buffer)
 		
 		#Buffer do céu (Opcional)
 		var sky_data : PackedByteArray
@@ -129,37 +142,36 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 		sky_uniform.binding = 7
 		sky_uniform.add_id(sky_buffer)
 		
-		# Execução de Compute shader em cada View ( Camera3D = 1 | CameraVR = 2 )
-		for view in range(scene_buffers.get_view_count()):
-			# Buffer da Textura da Tela
-			var screen_tex : RID = scene_buffers.get_color_layer(view)
-			var image_uniform : RDUniform = RDUniform.new()
-			image_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_IMAGE
-			image_uniform.binding = 0
-			image_uniform.add_id(screen_tex)
-			
-			# Conecta Buffers criados ao Shader
-			var bindings = [
-				image_uniform,
-				accumulation_image_uniform,
-				cam_uniform,
-				world_uniform,
-				spheres_uniform,
-				triangle_uniform,
-				mesh_uniform,
-				sky_uniform,
-			]
-			var uniform_set = rd.uniform_set_create(bindings, shader, 0)
-			
-			var compute_list : int = rd.compute_list_begin()
-			rd.compute_list_bind_compute_pipeline(compute_list, pipeline)
-			rd.compute_list_bind_uniform_set(compute_list, uniform_set, 0)
-			rd.compute_list_set_push_constant(compute_list, push_constant, push_constant.size())
-			rd.compute_list_dispatch(compute_list, x_group, y_group, 1)
-			rd.compute_list_end()
+		# Execução de Compute shader em View ( Camera3D = 1 | CameraVR = 2 )
+		# Buffer da Textura da Tela
+		var screen_tex : RID = scene_buffers.get_color_layer(0)
+		var image_uniform : RDUniform = RDUniform.new()
+		image_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_IMAGE
+		image_uniform.binding = 0
+		image_uniform.add_id(screen_tex)
+		
+		# Conecta Buffers criados ao Shader
+		var bindings = [
+			image_uniform,
+			accumulation_image_uniform,
+			cam_uniform,
+			world_uniform,
+			spheres_uniform,
+			triangle_uniform,
+			mesh_uniform,
+			sky_uniform,
+		]
+		var uniform_set = rd.uniform_set_create(bindings, shader, 0)
+		
+		var compute_list : int = rd.compute_list_begin()
+		rd.compute_list_bind_compute_pipeline(compute_list, pipeline)
+		rd.compute_list_bind_uniform_set(compute_list, uniform_set, 0)
+		rd.compute_list_set_push_constant(compute_list, push_constant, push_constant.size())
+		rd.compute_list_dispatch(compute_list, x_group, y_group, 1)
+		rd.compute_list_end()
 		frame+=1
 	else:
-		comp = load("res://test.tres")
+		comp = load("res://Scripts/RayTracing_Cam3D/Recursos/ray_data.tres")
 
 #Inicializa Shader
 func initialize_compute_shader() -> void:
@@ -167,12 +179,12 @@ func initialize_compute_shader() -> void:
 	if not rd: return
 	
 	#Carregar Compute Shader criado
-	var glsl_file : RDShaderFile = load("res://Shader/Compute/raytracer.glsl")
+	var glsl_file : RDShaderFile = load("res://Scripts/RayTracing_Cam3D/Compositor/raytracer.glsl")
 	shader = rd.shader_create_from_spirv(glsl_file.get_spirv())
 	pipeline = rd.compute_pipeline_create(shader)
 
-##Funções Ajudantes
-#transformar Matriz em Lista
+##Funções Auxiliares
+#Transformar Matriz em Lista
 func matriz_array(mat : Transform3D) -> PackedFloat32Array:
 	var base := mat.basis
 	var origin := mat.origin

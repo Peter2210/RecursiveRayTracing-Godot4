@@ -4,7 +4,7 @@ extends Node3D
 var directional_light_3d : DirectionalLight3D
 
 var rd = RenderingServer.get_rendering_device()
-var comp : Resource = preload("res://test.tres")
+var comp : Resource = preload("res://Scripts/RayTracing_Cam3D/Recursos/ray_data.tres")
 
 var esferas : Array[Dictionary]
 var spheres_number : float = 0
@@ -17,7 +17,7 @@ var triangulos : Array[Dictionary]
 func _ready():
 	set_up_shader()
 	comp.ready = true
-	ResourceSaver.save(comp, "res://test.tres")
+	ResourceSaver.save(comp, "res://Scripts/RayTracing_Cam3D/Recursos/ray_data.tres")
 	
 func _process(_delta: float) -> void:
 	pass
@@ -49,59 +49,60 @@ func find_Triangles(node : Node) -> Array[Dictionary]:
 		var mesh : Mesh = node.get_mesh()
 		
 		## Obter dados dos triangulos da mesh ( triangulos, normais )
-		var mesh_array : Array = mesh.surface_get_arrays(0)
-		var local_normals : PackedVector3Array = mesh_array[Mesh.ARRAY_NORMAL]
-		var local_vertex : PackedVector3Array = mesh_array[Mesh.ARRAY_VERTEX]
-		var indices : PackedInt32Array = mesh_array[Mesh.ARRAY_INDEX]
-		
-		var triangles_number = indices.size() / 3.0
-		
-		## Obter dados da bounding box ( caixa delimitadora )
-		var global_aabb = glt * mesh.get_aabb()
-		var aabb_c : Vector3 = global_aabb.position
-		var aabb_s :Vector3 = global_aabb.position + global_aabb.size
-		
-		## Obter dados do material da mesh
-		var material : Material = mesh.surface_get_material(0)
-		var color : Color = material.get("albedo_color")
-		var emission_color : Color = material.get("emission")
-		var roughness = material.get("roughness")
-		var emission_strenght : float = material.get("emission_energy_multiplier")
-		
-		malhas.append({
-			"tri_index": triangulos.size(),
-			"tri_number": triangles_number,
-			"aabb_center": [aabb_c.x, aabb_c.y, aabb_c.z],
-			"aabb_size": [aabb_s.x, aabb_s.y, aabb_s.z],
-			"material": [color.r, color.g, color.b, color.a],
-			"emission_color": emission_color,
-			"roughness": roughness,
-			"emission_strenght": emission_strenght
-		})
-		
-		## Transformação das vértices para cena global
-		for i in range(0, indices.size(), 3):
-			var i0 : int = indices[i]
-			var i1 : int = indices[i + 1]
-			var i2 : int = indices[i + 2]
+		for s in mesh.get_surface_count():
+			var mesh_array : Array = mesh.surface_get_arrays(s)
+			var local_normals : PackedVector3Array = mesh_array[Mesh.ARRAY_NORMAL]
+			var local_vertex : PackedVector3Array = mesh_array[Mesh.ARRAY_VERTEX]
+			var indices : PackedInt32Array = mesh_array[Mesh.ARRAY_INDEX]
 			
-			var posA = glt * local_vertex[i0]
-			var posB = glt * local_vertex[i1]
-			var posC = glt * local_vertex[i2]
+			var triangles_number = indices.size() / 3.0
 			
-			var normA = (glt.basis * local_normals[i0])
-			var normB = (glt.basis * local_normals[i1])
-			var normC = (glt.basis * local_normals[i2])
+			## Obter dados da bounding box ( caixa delimitadora )
+			var global_aabb = glt * mesh.get_aabb()
+			var aabb_c : Vector3 = global_aabb.position
+			var aabb_s :Vector3 = global_aabb.position + global_aabb.size
 			
-			triangulos.append({
-				"node": node,
-				"posA": [posA.x, posA.y, posA.z],
-				"posB": [posC.x, posC.y, posC.z],
-				"posC": [posB.x, posB.y, posB.z],
-				"normA": [normA.x, normA.y, normA.z],
-				"normB": [normC.x, normC.y, normC.z],
-				"normC": [normB.x, normB.y, normB.z],
+			## Obter dados do material da mesh
+			var material : Material = mesh.surface_get_material(0)
+			var color : Color = material.get("albedo_color")
+			var emission_color : Color = material.get("emission")
+			var roughness = material.get("roughness")
+			var emission_strenght : float = material.get("emission_energy_multiplier")
+			
+			malhas.append({
+				"tri_index": triangulos.size(),
+				"tri_number": triangles_number,
+				"aabb_center": [aabb_c.x, aabb_c.y, aabb_c.z],
+				"aabb_size": [aabb_s.x, aabb_s.y, aabb_s.z],
+				"material": [color.r, color.g, color.b, color.a],
+				"emission_color": emission_color,
+				"roughness": roughness,
+				"emission_strenght": emission_strenght
 			})
+			
+			## Transformação das vértices para cena global
+			for i in range(0, indices.size(), 3):
+				var i0 : int = indices[i]
+				var i1 : int = indices[i + 1]
+				var i2 : int = indices[i + 2]
+				
+				var posA = glt * local_vertex[i0]
+				var posB = glt * local_vertex[i1]
+				var posC = glt * local_vertex[i2]
+				
+				var normA = (glt.basis * local_normals[i0]) 
+				var normB = (glt.basis * local_normals[i1])
+				var normC = (glt.basis * local_normals[i2])
+				
+				triangulos.append({
+					"node": node,
+					"posA": [posA.x, posA.y, posA.z],
+					"posB": [posC.x, posC.y, posC.z],
+					"posC": [posB.x, posB.y, posB.z],
+					"normA": [normA.x, normA.y, normA.z],
+					"normB": [normC.x, normC.y, normC.z],
+					"normC": [normB.x, normB.y, normB.z],
+				})
 			
 	for child in node.get_children():
 		find_Triangles(child)

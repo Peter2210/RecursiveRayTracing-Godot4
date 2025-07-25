@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://buc6n5xvo3b5m"]
+
+[ext_resource type="PackedScene" uid="uid://dkuix0sq70fce" path="res://Cenas/raytracing_camera_3d.tscn" id="1_x3hk2"]
+[ext_resource type="PackedScene" uid="uid://elj8pfquqbiq" path="res://Cenas/suzzane_box.tscn" id="2_74bqr"]
+
+[node name="main" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.320943, -0.947035, -0.0109086, -0.836514, -0.288853, 0.465627, -0.444117, -0.140315, -0.884914, 0, 3.4, 0)
+shadow_enabled = true
+
+[node name="Camera3D" parent="." instance=ExtResource("1_x3hk2")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.3, 0.4, -4.4)
+
+[node name="SuzzaneBox" parent="." instance=ExtResource("2_74bqr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, -1.6, 0.4)

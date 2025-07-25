@@ -1,7 +1,7 @@
 #[compute]
 #version 450
 
-layout(local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
 
 //Variaveis Globais
 const float infinity = 1. / 0.;
@@ -253,6 +253,11 @@ vec3 Trace(in Ray ray, inout uint state){
 
 void main() {
 	uvec2 gid = gl_GlobalInvocationID.xy;
+	
+	if (gid.x >= uint(p.screen_size.x) || gid.y >= uint(p.screen_size.y)){
+		return;
+	}
+	
 	vec2 uv = (vec2(gid) / p.screen_size);
 	
 	vec4 view = cam.viewparams;

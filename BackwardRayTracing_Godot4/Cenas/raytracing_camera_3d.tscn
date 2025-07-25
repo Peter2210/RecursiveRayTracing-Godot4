@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://dkuix0sq70fce"]
 
-[ext_resource type="Script" uid="uid://bgwewl00egrjx" path="res://Scripts/Compositor/raytracing.gd" id="1_0rd3l"]
-[ext_resource type="Script" uid="uid://bvfpp4ipfsvg3" path="res://Scripts/cam3d.gd" id="2_0rd3l"]
-[ext_resource type="Script" uid="uid://btkcg8m36ntm1" path="res://Scripts/scene_data.gd" id="3_tuapm"]
+[ext_resource type="Script" uid="uid://bgwewl00egrjx" path="res://Scripts/RayTracing_Cam3D/Compositor/raytracing.gd" id="1_0rd3l"]
+[ext_resource type="Script" uid="uid://bvfpp4ipfsvg3" path="res://Scripts/RayTracing_Cam3D/Cam3D/moviment.gd" id="2_0rd3l"]
+[ext_resource type="Script" uid="uid://btkcg8m36ntm1" path="res://Scripts/RayTracing_Cam3D/Cam3D/setup_data.gd" id="3_tuapm"]
 
 [sub_resource type="CompositorEffect" id="CompositorEffect_hhon7"]
 resource_local_to_scene = false
