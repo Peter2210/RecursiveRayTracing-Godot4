@@ -1,7 +1,7 @@
 #[compute]
 #version 450
 
-layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+layout(local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
 
 //Variaveis Globais
 const float infinity = 1. / 0.;
@@ -12,24 +12,21 @@ layout(rgba16f, binding = 1, set = 0) uniform image2D accum_tex;
 
 layout(push_constant) uniform Params{
 	vec2 screen_size;
-	float NumRenderedFrames;
-	float MaxBounceCount;
-	float NumRayPerPixel;
-	float NumMeshes;
+	int NumRenderedFrames;
+	int MaxBounceCount;
+	int NumRayPerPixel;
+	int NumMeshes;
+	int NumberSpheres;
 }p;
 
 //Dados da Camera
 layout(set = 0, binding = 2, std430) restrict buffer CameraData {
 	mat4 cam_transf;  //Local para Mundo
-	vec4 origem;      //Posicao da camera no mundo
-	vec4 viewparams;  //Largura, Altura e Z_near
+	vec3 origem;      //Posicao da camera no mundo
+	vec3 viewparams;  //Largura, Altura e Z_near
 }cam;
 
-layout(set = 0, binding = 3, std430) restrict buffer SceneData {
-	float NumberSpheres;
-}scene;
-
-//Dados dos objetos (Esfera,)
+//Dados dos objetos
 struct RayTracingMaterial {
 	vec4 color;
 	vec4 emissionColour;
@@ -38,43 +35,43 @@ struct RayTracingMaterial {
 };
 
 struct Sphere {
-	vec4 position;
+	vec3 position;
 	float radius;
 	RayTracingMaterial material;
 };
 
-layout(std430, binding = 4) readonly buffer SphereBuffer {
+layout(std430, binding = 3) readonly buffer SphereBuffer {
 	Sphere spheres[];
 };
 
 struct Triangle{
-	vec4 posA, posB, posC;
-	vec4 normalA, normalB, normalC;
+	vec3 posA, posB, posC;
+	vec3 normalA, normalB, normalC;
 };
 
-layout(std430, binding = 5) readonly buffer TriangleBuffer {
+layout(std430, binding = 4) readonly buffer TriangleBuffer {
 	Triangle triangles[];
 };
 
 struct MeshInfo{
-	float firstTriangleIndex;
-	float numTriangles;
-	vec4 boundMin;
-	vec4 boundMax;
+	int firstTriangleIndex;
+	int numTriangles;
+	vec3 boundMin;
+	vec3 boundMax;
 	RayTracingMaterial material;
 };
 
-layout(std430, binding = 6) readonly buffer MeshBuffer {
+layout(std430, binding = 5) readonly buffer MeshBuffer {
 	MeshInfo allMeshInfo[];
 };
 
-layout(set = 0, binding = 7, std430) restrict buffer SkyData {
+layout(set = 0, binding = 6, std430) restrict buffer SkyData {
 	vec4 GroundColour;
 	vec4 ColourHorizon;
 	vec4 ColourZenith;
 	vec4 SunLightDirection;
-	float SunFocus;
-	float SunIntensity;
+	int SunFocus;
+	int SunIntensity;
 }sky;
 
 //Dados do raio
@@ -92,8 +89,8 @@ struct HitInfo{
 };
 
 //Calcula intercecao de raio com esfera
-HitInfo RaySphere(in Ray ray, in vec4 sphereCentre, in float sphereRadius, inout HitInfo hitInfo){
-	vec3 offsetRayOrigin = ray.origem - sphereCentre.xyz;
+HitInfo RaySphere(in Ray ray, in vec3 sphereCentre, in float sphereRadius, inout HitInfo hitInfo){
+	vec3 offsetRayOrigin = ray.origem - sphereCentre;
 	
 	float a = dot(ray.dir, ray.dir);
 	float b = 2.0 * dot(offsetRayOrigin, ray.dir);
@@ -108,7 +105,7 @@ HitInfo RaySphere(in Ray ray, in vec4 sphereCentre, in float sphereRadius, inout
 			hitInfo.didHit = true;
 			hitInfo.dst = dst;
 			hitInfo.hitPoint = ray.origem + ray.dir * dst;
-			hitInfo.normal = normalize(hitInfo.hitPoint - sphereCentre.xyz);
+			hitInfo.normal = normalize(hitInfo.hitPoint - sphereCentre);
 		}
 	}
 	return hitInfo;
@@ -116,10 +113,10 @@ HitInfo RaySphere(in Ray ray, in vec4 sphereCentre, in float sphereRadius, inout
 
 //Calcula intercecao de raio com triangulos
 HitInfo RayTriangle(in Ray ray, in Triangle tri, inout HitInfo hitInfo){
-	vec3 edgeAB = tri.posB.xyz - tri.posA.xyz;
-	vec3 edgeAC = tri.posC.xyz - tri.posA.xyz;
+	vec3 edgeAB = tri.posB - tri.posA;
+	vec3 edgeAC = tri.posC - tri.posA;
 	vec3 normalVector = cross(edgeAB, edgeAC);
-	vec3 ao = ray.origem - tri.posA.xyz;
+	vec3 ao = ray.origem - tri.posA;
 	vec3 dao = cross(ao, ray.dir);
 	
 	float determinant = -dot(ray.dir, normalVector);
@@ -133,7 +130,7 @@ HitInfo RayTriangle(in Ray ray, in Triangle tri, inout HitInfo hitInfo){
 	hitInfo.didHit = determinant >= 1e-6 && dst >= 0.0 && u >= 0.0 && v >= 0.0 && w>= 0.0;
 	hitInfo.dst = dst;
 	hitInfo.hitPoint = ray.origem + ray.dir * dst;
-	hitInfo.normal = normalize(tri.normalA.xyz * w + tri.normalB.xyz * u + tri.normalC.xyz * v);
+	hitInfo.normal = normalize(tri.normalA * w + tri.normalB * u + tri.normalC * v);
 	
 	return hitInfo;
 }
@@ -153,7 +150,7 @@ bool RayBoundingBox(in Ray ray, in vec3 boxMin, in vec3 boxMax) {
 
 //Encontra primeiro ponto onde raio colidiu retornando informacoes
 HitInfo CalculateRayColision(in Ray ray, inout HitInfo closestHit){
-	for (int i = 0; i < scene.NumberSpheres; ++i){
+	for (int i = 0; i < p.NumberSpheres; ++i){
 		HitInfo hitInfo = HitInfo(false, 0.0, vec3(0.0), vec3(0.0), RayTracingMaterial(vec4(0.0), vec4(0.0), 0.0, 0.0));
 		RaySphere(ray, spheres[i].position, spheres[i].radius, hitInfo);
 		
@@ -166,12 +163,12 @@ HitInfo CalculateRayColision(in Ray ray, inout HitInfo closestHit){
 	HitInfo triHit = HitInfo(false, 0.0, vec3(0.0), vec3(0.0), RayTracingMaterial(vec4(0.0), vec4(0.0), 0.0, 0.0));
 	for (int meshIndex = 0; meshIndex < p.NumMeshes; ++meshIndex){
 		MeshInfo meshInfo = allMeshInfo[meshIndex];
-		if (!RayBoundingBox(ray, meshInfo.boundMin.xyz, meshInfo.boundMax.xyz)) {
+		if (!RayBoundingBox(ray, meshInfo.boundMin, meshInfo.boundMax)) {
 			continue;
 		}
 		
 		for (int i = 0; i < meshInfo.numTriangles; ++i) {
-			int triIndex = int(meshInfo.firstTriangleIndex) + i;
+			int triIndex = meshInfo.firstTriangleIndex + i;
 			Triangle tri = triangles[triIndex];
 			RayTriangle(ray, tri, triHit);
 			
@@ -253,24 +250,22 @@ vec3 Trace(in Ray ray, inout uint state){
 
 void main() {
 	uvec2 gid = gl_GlobalInvocationID.xy;
-	
 	if (gid.x >= uint(p.screen_size.x) || gid.y >= uint(p.screen_size.y)){
 		return;
 	}
 	
 	vec2 uv = (vec2(gid) / p.screen_size);
 	
-	vec4 view = cam.viewparams;
-	vec4 c_origem = cam.origem;
+	vec3 view = cam.viewparams;
+	vec3 c_origem = cam.origem;
 	mat4 transf = cam.cam_transf;
 	
-	//1.0 necessario para inversao 
-	vec4 viewPointlocal = vec4((1.0 - uv - 0.5), 1.0, 1.0) * view;
-	vec4 temp = transf * viewPointlocal;
-	vec3 viewPoint = vec3(temp.x, temp.y, temp.z);
+	//1.0 necessario para inversao de UV
+	vec3 viewPointlocal = vec3((1.0 - uv - 0.5), 1.0) * view;
+	vec3 viewPoint = vec3(transf * vec4(viewPointlocal, 1.0));
 	
 	Ray ray;
-	ray.origem = vec3(c_origem.x, c_origem.y, c_origem.z);
+	ray.origem = c_origem;
 	ray.dir = normalize(viewPoint - ray.origem);
 	
 	uint rngState = gid.x + gid.y * uint(p.screen_size.x);
@@ -279,7 +274,7 @@ void main() {
 	
 	for(int rayIndex = 0; rayIndex < p.NumRayPerPixel; ++rayIndex){
 		totalIncomingLight += Trace(ray, rngState);
-		rngState += uint(p.NumRenderedFrames) * 719393u;
+		rngState += p.NumRenderedFrames * 719393u;
 	}
 	
 	vec3 pixelCor = totalIncomingLight / p.NumRayPerPixel;
@@ -288,7 +283,7 @@ void main() {
 	
 	vec4 accumulatedAverage;
 	
-	if(p.NumRenderedFrames < 1.0){
+	if(p.NumRenderedFrames == 0){
 		accumulatedAverage = color;
 		imageStore(accum_tex, ivec2(gid), accumulatedAverage);
 	}else{
@@ -298,7 +293,7 @@ void main() {
 		imageStore(accum_tex, ivec2(gid), accumulatedAverage);
 	}	
 	
-	//vec4 tes = vec4(spheres[0].material.roughness,0,0,1);
+	//vec4 tes = vec4(p.NumRenderedFrames,0,0,1);
 	//vec4 tes = spheres[1].material.color;
 	//vec4 tes = vec4(spheres[1].material.emissionStrength-15.5,0,0,1);
 	//vec4 tes = vec4(spheres[0].material.roughness,spheres[0].material.roughness,spheres[0].material.roughness,1);

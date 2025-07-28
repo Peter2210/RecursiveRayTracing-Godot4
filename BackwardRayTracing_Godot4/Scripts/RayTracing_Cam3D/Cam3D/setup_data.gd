@@ -7,10 +7,10 @@ var rd = RenderingServer.get_rendering_device()
 var comp : Resource = preload("res://Scripts/RayTracing_Cam3D/Recursos/ray_data.tres")
 
 var esferas : Array[Dictionary]
-var spheres_number : float = 0
+var spheres_number : int = 0
 
 var malhas : Array[Dictionary]
-var mesh_number : float = 0
+var mesh_number : int = 0
 
 var triangulos : Array[Dictionary]
 
@@ -55,7 +55,7 @@ func find_Triangles(node : Node) -> Array[Dictionary]:
 			var local_vertex : PackedVector3Array = mesh_array[Mesh.ARRAY_VERTEX]
 			var indices : PackedInt32Array = mesh_array[Mesh.ARRAY_INDEX]
 			
-			var triangles_number = indices.size() / 3.0
+			var triangles_number : int = int(indices.size() / 3.0)
 			
 			## Obter dados da bounding box ( caixa delimitadora )
 			var global_aabb = glt * mesh.get_aabb()
@@ -109,19 +109,14 @@ func find_Triangles(node : Node) -> Array[Dictionary]:
 	return triangulos
 
 func make_MeshBuffer():
-	var mesh_array := PackedFloat32Array()
+	var mesh_data : PackedByteArray
 	for malha in malhas:
-		mesh_array.append_array([
-			malha["tri_index"],
-			malha["tri_number"], 0.0, 0.0,
-			malha["aabb_center"][0], malha["aabb_center"][1], malha["aabb_center"][2],1.0,
-			malha["aabb_size"][0], malha["aabb_size"][1], malha["aabb_size"][2],1.0,
-			malha["material"][0], malha["material"][1], malha["material"][2],malha["material"][3],
-			malha["emission_color"][0], malha["emission_color"][1], malha["emission_color"][2],1.0,
-			malha["roughness"],
-			malha["emission_strenght"], 0.0, 0.0
-		])
-	var mesh_data : PackedByteArray = mesh_array.to_byte_array()
+		mesh_data.append_array(PackedInt32Array([malha["tri_index"], malha["tri_number"], 0.0, 0.0,]).to_byte_array())
+		mesh_data.append_array(PackedFloat32Array([malha["aabb_center"][0], malha["aabb_center"][1], malha["aabb_center"][2],0.0]).to_byte_array())
+		mesh_data.append_array(PackedFloat32Array([malha["aabb_size"][0], malha["aabb_size"][1], malha["aabb_size"][2],0.0]).to_byte_array())
+		mesh_data.append_array(PackedFloat32Array([malha["material"][0], malha["material"][1], malha["material"][2],malha["material"][3]]).to_byte_array())
+		mesh_data.append_array(PackedFloat32Array([malha["emission_color"][0], malha["emission_color"][1], malha["emission_color"][2],1.0]).to_byte_array())
+		mesh_data.append_array(PackedFloat32Array([malha["roughness"], malha["emission_strenght"], 0.0, 0.0]).to_byte_array())
 	var mesh_buffer : RID = rd.storage_buffer_create(mesh_data.size(), mesh_data)
 	comp.mesh_buffer = mesh_buffer
 	comp.mesh_number = malhas.size()
@@ -130,12 +125,12 @@ func make_TriangleBuffer():
 	var triangle_array := PackedFloat32Array()
 	for triangulo in triangulos:
 		triangle_array.append_array([
-			triangulo["posA"][0], triangulo["posA"][1], triangulo["posA"][2],1.0,
-			triangulo["posB"][0], triangulo["posB"][1], triangulo["posB"][2],1.0,
-			triangulo["posC"][0], triangulo["posC"][1], triangulo["posC"][2],1.0,
-			triangulo["normA"][0], triangulo["normA"][1], triangulo["normA"][2],1.0,
-			triangulo["normB"][0], triangulo["normB"][1], triangulo["normB"][2],1.0,
-			triangulo["normC"][0], triangulo["normC"][1], triangulo["normC"][2],1.0,
+			triangulo["posA"][0], triangulo["posA"][1], triangulo["posA"][2],0.0,
+			triangulo["posB"][0], triangulo["posB"][1], triangulo["posB"][2],0.0,
+			triangulo["posC"][0], triangulo["posC"][1], triangulo["posC"][2],0.0,
+			triangulo["normA"][0], triangulo["normA"][1], triangulo["normA"][2],0.0,
+			triangulo["normB"][0], triangulo["normB"][1], triangulo["normB"][2],0.0,
+			triangulo["normC"][0], triangulo["normC"][1], triangulo["normC"][2],0.0,
 		])
 	var triangle_data : PackedByteArray = triangle_array.to_byte_array()
 	var triangle_buffer : RID = rd.storage_buffer_create(triangle_data.size(), triangle_data)
@@ -177,7 +172,7 @@ func make_SphereBuffer():
 	else:
 		for esfera in esferas:
 			sphere_array.append_array([
-				esfera["position"][0], esfera["position"][1], esfera["position"][2], 1.0,
+				esfera["position"][0], esfera["position"][1], esfera["position"][2], 0.0,
 				esfera["radius"], 0.0, 0.0, 0.0,
 				esfera["color"][0], esfera["color"][1], esfera["color"][2], esfera["color"][3],
 				esfera["emission_color"][0], esfera["emission_color"][1], esfera["emission_color"][2], 1.0,
