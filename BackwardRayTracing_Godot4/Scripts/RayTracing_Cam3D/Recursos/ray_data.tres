@@ -6,8 +6,8 @@
 script = ExtResource("1_umafu")
 spheres_buffer = RID(5720896438287)
 spheres_number = 0
-triangle_buffer = RID(5725191405584)
-mesh_buffer = RID(5729486372881)
+triangle_buffer = RID(5729486372881)
+mesh_buffer = RID(5725191405584)
 mesh_number = 8
 accu_tex = RID(5716601471166)
 ready = true

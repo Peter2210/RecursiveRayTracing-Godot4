@@ -1,47 +1,14 @@
-extends Node3D
-
-@onready var tree : Window = get_tree().root
-var directional_light_3d : DirectionalLight3D
-
-var rd = RenderingServer.get_rendering_device()
-var comp : Resource = preload("res://Scripts/RayTracing_Cam3D/Recursos/ray_data.tres")
-
-var esferas : Array[Dictionary]
-var spheres_number : int = 0
+extends Node
 
 var malhas : Array[Dictionary]
 var mesh_number : int = 0
 
 var triangulos : Array[Dictionary]
 
-func _ready():
-	set_up_shader()
-	comp.ready = true
-	ResourceSaver.save(comp, "res://Scripts/RayTracing_Cam3D/Recursos/ray_data.tres")
-	
-func _process(_delta: float) -> void:
-	pass
-
-func set_up_shader():
-	## Criar textura de acumulação
-	make_AccumulationTexture()
-	
-	## Procurar esferas da cena e criar buffer de dados
-	find_Spheres(tree)
-	make_SphereBuffer()
-	
-	## Procurar malhas (!esfera) e criar buffer de dados
+func set_MeshesBuffers(tree : Window, comp : Resource, rd : RenderingDevice):
 	find_Triangles(tree)
-	
-	make_TriangleBuffer()
-	make_MeshBuffer()
-	## Criação de um buffer obtendo dados do céu (opcional)
-	enviroment_param()
-
-func enviroment_param():
-	directional_light_3d = tree.get_node("main/DirectionalLight3D")
-	var LightDirection : Vector3 = directional_light_3d.global_transform.basis.z.normalized()
-	comp.SunLightDirection = [LightDirection.x, LightDirection.y, LightDirection.z, 1.0] 
+	make_MeshBuffer(comp, rd)
+	make_TriangleBuffer(comp, rd)
 
 func find_Triangles(node : Node) -> Array[Dictionary]:
 	if node is MeshInstance3D and node.mesh is not SphereMesh:
@@ -108,7 +75,7 @@ func find_Triangles(node : Node) -> Array[Dictionary]:
 		find_Triangles(child)
 	return triangulos
 
-func make_MeshBuffer():
+func make_MeshBuffer(comp : Resource, rd : RenderingDevice):
 	var mesh_data : PackedByteArray
 	for malha in malhas:
 		mesh_data.append_array(PackedInt32Array([malha["tri_index"], malha["tri_number"], 0.0, 0.0,]).to_byte_array())
@@ -121,7 +88,7 @@ func make_MeshBuffer():
 	comp.mesh_buffer = mesh_buffer
 	comp.mesh_number = malhas.size()
 
-func make_TriangleBuffer():
+func make_TriangleBuffer(comp : Resource, rd : RenderingDevice):
 	var triangle_array := PackedFloat32Array()
 	for triangulo in triangulos:
 		triangle_array.append_array([
@@ -135,63 +102,3 @@ func make_TriangleBuffer():
 	var triangle_data : PackedByteArray = triangle_array.to_byte_array()
 	var triangle_buffer : RID = rd.storage_buffer_create(triangle_data.size(), triangle_data)
 	comp.triangle_buffer = triangle_buffer
-
-func find_Spheres(node: Node) -> Array[Dictionary]:
-	if node is MeshInstance3D and node.mesh is SphereMesh:
-		var material : Material = node.get_active_material(0)
-		var radius = node.get("scale").x * 0.5
-		var color : Color = material.get("albedo_color")
-		var emission_color = material.get("emission")
-		var roughness = material.get("roughness")
-		var emission_strenght = material.get("emission_energy_multiplier")
-		esferas.append({
-			"node": node,
-			"position": [node.global_position.x, node.global_position.y, node.global_position.z],
-			"radius": radius, 
-			"color": [color.r, color.g, color.b, color.a],
-			"emission_color": emission_color,
-			"roughness": roughness,
-			"emission_strenght": emission_strenght
-			})
-		spheres_number += 1
-	for child in node.get_children():
-		find_Spheres(child)
-	return esferas
-
-func make_SphereBuffer():
-	var sphere_array := PackedFloat32Array()
-	if spheres_number == 0:
-		sphere_array.append_array([
-				0.0, 0.0, 0.0, 1.0,
-				0.0, 0.0, 0.0, 0.0,
-				0.0, 0.0, 0.0, 0.0,
-				0.0, 0.0, 0.0, 1.0,
-				0.0,
-				0.0, 0.0, 0.0
-			])
-	else:
-		for esfera in esferas:
-			sphere_array.append_array([
-				esfera["position"][0], esfera["position"][1], esfera["position"][2], 0.0,
-				esfera["radius"], 0.0, 0.0, 0.0,
-				esfera["color"][0], esfera["color"][1], esfera["color"][2], esfera["color"][3],
-				esfera["emission_color"][0], esfera["emission_color"][1], esfera["emission_color"][2], 1.0,
-				esfera["roughness"],
-				esfera["emission_strenght"], 0.0, 0.0
-			])
-	var sphere_data : PackedByteArray = sphere_array.to_byte_array()
-	var spheres_buffer : RID = rd.storage_buffer_create(sphere_data.size(), sphere_data)
-	comp.spheres_buffer = spheres_buffer
-	comp.spheres_number = spheres_number
-
-func make_AccumulationTexture():
-	var format := RDTextureFormat.new()
-	format.width = get_viewport().get_texture().get_width()
-	format.height = get_viewport().get_texture().get_height()
-	format.format = RenderingDevice.DATA_FORMAT_R16G16B16A16_SFLOAT
-	format.usage_bits = RenderingDevice.TEXTURE_USAGE_STORAGE_BIT | RenderingDevice.TEXTURE_USAGE_CAN_COPY_FROM_BIT | RenderingDevice.TEXTURE_USAGE_CAN_COPY_TO_BIT
-
-	var a_view := RDTextureView.new()
-
-	var accumulation_texture : RID = rd.texture_create(format, a_view)
-	comp.accu_tex = accumulation_texture

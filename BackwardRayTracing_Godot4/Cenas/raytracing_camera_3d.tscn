@@ -1,8 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://dkuix0sq70fce"]
+[gd_scene load_steps=9 format=3 uid="uid://dkuix0sq70fce"]
 
 [ext_resource type="Script" uid="uid://bgwewl00egrjx" path="res://Scripts/RayTracing_Cam3D/Compositor/raytracing.gd" id="1_0rd3l"]
-[ext_resource type="Script" uid="uid://bvfpp4ipfsvg3" path="res://Scripts/RayTracing_Cam3D/Cam3D/moviment.gd" id="2_0rd3l"]
-[ext_resource type="Script" uid="uid://btkcg8m36ntm1" path="res://Scripts/RayTracing_Cam3D/Cam3D/setup_data.gd" id="3_tuapm"]
+[ext_resource type="Script" uid="uid://bvfpp4ipfsvg3" path="res://Scripts/RayTracing_Cam3D/Cam3D/movimento.gd" id="2_0rd3l"]
+[ext_resource type="Script" uid="uid://btkcg8m36ntm1" path="res://Scripts/RayTracing_Cam3D/Cam3D/gerenciador.gd" id="3_tuapm"]
+[ext_resource type="Script" uid="uid://1jm165nnahfi" path="res://Scripts/RayTracing_Cam3D/Cam3D/esferas.gd" id="4_lx7fh"]
+[ext_resource type="Script" uid="uid://dpg0c6p8fxt6f" path="res://Scripts/RayTracing_Cam3D/Cam3D/triangulos.gd" id="5_upn1n"]
+[ext_resource type="Script" uid="uid://bibsy03jmj3n" path="res://Scripts/RayTracing_Cam3D/Cam3D/ambiente.gd" id="6_iucfl"]
 
 [sub_resource type="CompositorEffect" id="CompositorEffect_hhon7"]
 resource_local_to_scene = false
@@ -23,5 +26,14 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 
 compositor = SubResource("Compositor_txgtr")
 script = ExtResource("2_0rd3l")
 
-[node name="Node3D" type="Node3D" parent="."]
+[node name="Gerenciador" type="Node" parent="."]
 script = ExtResource("3_tuapm")
+
+[node name="Esferas" type="Node" parent="Gerenciador"]
+script = ExtResource("4_lx7fh")
+
+[node name="Triangulos" type="Node" parent="Gerenciador"]
+script = ExtResource("5_upn1n")
+
+[node name="Ambiente" type="Node" parent="Gerenciador"]
+script = ExtResource("6_iucfl")
