@@ -15,7 +15,6 @@ effect_callback_type = 4
 needs_motion_vectors = false
 needs_normal_roughness = false
 script = ExtResource("1_0rd3l")
-Acumular = false
 metadata/_custom_type_script = "uid://bgwewl00egrjx"
 
 [sub_resource type="Compositor" id="Compositor_txgtr"]

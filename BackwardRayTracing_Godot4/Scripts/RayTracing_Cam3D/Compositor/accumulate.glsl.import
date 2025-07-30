@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://caye4cxpkuvf0"
+path="res://.godot/imported/accumulate.glsl-aeac1a50dffb03f89a078b4c57b51f89.res"
+
+[deps]
+
+source_file="res://Scripts/RayTracing_Cam3D/Compositor/accumulate.glsl"
+dest_files=["res://.godot/imported/accumulate.glsl-aeac1a50dffb03f89a078b4c57b51f89.res"]
+
+[params]
+

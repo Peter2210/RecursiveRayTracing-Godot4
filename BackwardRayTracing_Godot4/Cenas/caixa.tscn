@@ -38,6 +38,7 @@ emission_energy_multiplier = 4.0
 material = SubResource("StandardMaterial3D_w7uic")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ho6re"]
+albedo_color = Color(1, 0, 1, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_sc444"]
 material = SubResource("StandardMaterial3D_ho6re")
@@ -48,6 +49,7 @@ material = SubResource("StandardMaterial3D_ho6re")
 material = SubResource("StandardMaterial3D_sc444")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7xepq"]
+albedo_color = Color(0, 0, 1, 1)
 roughness = 0.0
 
 [sub_resource type="SphereMesh" id="SphereMesh_slj7c"]

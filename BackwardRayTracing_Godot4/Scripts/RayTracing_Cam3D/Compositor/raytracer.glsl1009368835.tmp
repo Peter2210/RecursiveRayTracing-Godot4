@@ -1,7 +1,7 @@
 #[compute]
 #version 450
 
-layout(local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
 
 //Variaveis Globais
 const float infinity = 1. / 0.;
@@ -10,7 +10,6 @@ layout(rgba16f, binding = 0, set = 0) uniform image2D screen_tex;
 
 layout(rgba16f, binding = 1, set = 0) uniform image2D accum_tex;
 
-// Atribuindo valores do buffer a locais
 layout(push_constant) uniform Params{
 	vec2 screen_size;
 	int NumRenderedFrames;
@@ -20,25 +19,12 @@ layout(push_constant) uniform Params{
 	int NumberSpheres;
 }p;
 
-// Buffer Params (push_constant)
-int NumRenderedFrames = p.NumRenderedFrames;
-int MaxBounceCount = p.MaxBounceCount;
-int NumRayPerPixel = p.NumRayPerPixel;
-int NumMeshes = p.NumMeshes;
-int NumberSpheres = p.NumberSpheres;
-
 //Dados da Camera
 layout(set = 0, binding = 2, std430) restrict buffer CameraData {
 	mat4 cam_transf;  //Local para Mundo
 	vec3 origem;      //Posicao da camera no mundo
 	vec3 viewparams;  //Largura, Altura e Z_near
 }cam;
-
-// Buffer CameraData
-uvec2 screen_size = uvec2(p.screen_size);
-vec3 view = cam.viewparams;
-vec3 c_origem = cam.origem;
-mat4 transf = cam.cam_transf;
 
 //Dados dos objetos
 struct RayTracingMaterial {
@@ -83,7 +69,7 @@ layout(set = 0, binding = 6, std430) restrict buffer SkyData {
 	vec4 GroundColour;
 	vec4 ColourHorizon;
 	vec4 ColourZenith;
-	vec3 SunLightDirection;
+	vec4 SunLightDirection;
 	int SunFocus;
 	int SunIntensity;
 }sky;
@@ -103,9 +89,7 @@ struct HitInfo{
 };
 
 //Calcula intercecao de raio com esfera
-HitInfo RaySphere(in Ray ray, in vec3 sphereCentre, in float sphereRadius){
-	HitInfo hitInfo = HitInfo(false, infinity, vec3(0.0), vec3(0.0), RayTracingMaterial(vec4(0.0), vec4(0.0), 0.0, 0.0));
-	
+HitInfo RaySphere(in Ray ray, in vec3 sphereCentre, in float sphereRadius, inout HitInfo hitInfo){
 	vec3 offsetRayOrigin = ray.origem - sphereCentre;
 	
 	float a = dot(ray.dir, ray.dir);
@@ -128,9 +112,7 @@ HitInfo RaySphere(in Ray ray, in vec3 sphereCentre, in float sphereRadius){
 }
 
 //Calcula intercecao de raio com triangulos
-HitInfo RayTriangle(in Ray ray, in Triangle tri){
-	HitInfo hitInfo = HitInfo(false, infinity, vec3(0.0), vec3(0.0), RayTracingMaterial(vec4(0.0), vec4(0.0), 0.0, 0.0));
-	
+HitInfo RayTriangle(in Ray ray, in Triangle tri, inout HitInfo hitInfo){
 	vec3 edgeAB = tri.posB - tri.posA;
 	vec3 edgeAC = tri.posC - tri.posA;
 	vec3 normalVector = cross(edgeAB, edgeAC);
@@ -167,10 +149,10 @@ bool RayBoundingBox(in Ray ray, in vec3 boxMin, in vec3 boxMax) {
 }
 
 //Encontra primeiro ponto onde raio colidiu retornando informacoes
-HitInfo CalculateRayColision(in Ray ray){
-	HitInfo closestHit = HitInfo(false, infinity, vec3(0.0), vec3(0.0), RayTracingMaterial(vec4(0.0), vec4(0.0), 0.0, 0.0));
-	for (int i = 0; i < NumberSpheres; ++i){
-		HitInfo hitInfo = RaySphere(ray, spheres[i].position, spheres[i].radius);
+HitInfo CalculateRayColision(in Ray ray, inout HitInfo closestHit){
+	HitInfo hitInfo = HitInfo(false, 0.0, vec3(0.0), vec3(0.0), RayTracingMaterial(vec4(0.0), vec4(0.0), 0.0, 0.0));
+	for (int i = 0; i < p.NumberSpheres; ++i){
+		RaySphere(ray, spheres[i].position, spheres[i].radius, hitInfo);
 		
 		if(hitInfo.didHit && hitInfo.dst < closestHit.dst){
 			closestHit = hitInfo;
@@ -178,16 +160,17 @@ HitInfo CalculateRayColision(in Ray ray){
 		}
 	}
 	
-	for (int meshIndex = 0; meshIndex < NumMeshes; ++meshIndex){
+	for (int meshIndex = 0; meshIndex < p.NumMeshes; ++meshIndex){
 		MeshInfo meshInfo = allMeshInfo[meshIndex];
 		if (!RayBoundingBox(ray, meshInfo.boundMin, meshInfo.boundMax)) {
 			continue;
 		}
 		
+		HitInfo triHit = HitInfo(false, 0.0, vec3(0.0), vec3(0.0), RayTracingMaterial(vec4(0.0), vec4(0.0), 0.0, 0.0));
 		for (int i = 0; i < meshInfo.numTriangles; ++i) {
 			int triIndex = meshInfo.firstTriangleIndex + i;
 			Triangle tri = triangles[triIndex];
-			HitInfo triHit = RayTriangle(ray, tri);
+			RayTriangle(ray, tri, triHit);
 			
 			if (triHit.didHit && triHit.dst < closestHit.dst) {
 				closestHit = triHit;
@@ -228,7 +211,7 @@ vec3 RandomDirection(inout uint state){
 vec3 GetEnviromentLight(in Ray ray){
 	float skyGradientT = pow(smoothstep(0, 0.4, ray.dir.y), 0.35);
 	vec3 skyGradient = mix(sky.ColourHorizon.xyz, sky.ColourZenith.xyz, skyGradientT);
-	float sun = pow(max(0, dot(ray.dir, sky.SunLightDirection)), sky.SunFocus) * sky.SunIntensity;
+	float sun = pow(max(0, dot(ray.dir, sky.SunLightDirection.xyz)), sky.SunFocus) * sky.SunIntensity;
 	
 	float groundToSkyT = smoothstep(-0.01, 0, ray.dir.y);
 	float sunMask = step(0.0, groundToSkyT);
@@ -239,8 +222,10 @@ vec3 GetEnviromentLight(in Ray ray){
 vec3 Trace(in Ray ray, inout uint state){
 	vec3 incomingLight = vec3(0.0);
 	vec3 rayColour = vec3(1.0);
-	for(int i = 0; i <= MaxBounceCount; ++i){
-		HitInfo hitInfo =  CalculateRayColision(ray);
+	HitInfo hitInfo = HitInfo(false, infinity, vec3(0.0), vec3(0.0), RayTracingMaterial(vec4(0.0), vec4(0.0), 0.0, 0.0));
+	for(int i = 0; i <= p.MaxBounceCount; ++i){
+		hitInfo = HitInfo(false, infinity, vec3(0.0), vec3(0.0), RayTracingMaterial(vec4(0.0), vec4(0.0), 0.0, 0.0));
+		CalculateRayColision(ray, hitInfo);
 		
 		if(hitInfo.didHit){
 			RayTracingMaterial material = hitInfo.material;
@@ -249,7 +234,7 @@ vec3 Trace(in Ray ray, inout uint state){
 			vec3 diffuseDir = normalize(hitInfo.normal + RandomDirection(state));
 			vec3 specularDir = reflect(ray.dir, hitInfo.normal);
 			ray.dir = normalize(mix(specularDir, diffuseDir,material.roughness));
-			
+			//ray.dir = normalize(hitInfo.normal + RandomDirection(state));
 			
 			vec3 emittedLight = material.emissionColour.xyz * material.emissionStrength;
 			incomingLight += emittedLight * rayColour;
@@ -271,40 +256,49 @@ vec3 Trace(in Ray ray, inout uint state){
 
 void main() {
 	uvec2 gid = gl_GlobalInvocationID.xy;
-	if (gid.x >= screen_size.x || gid.y >= screen_size.y){
+	if (gid.x >= uint(p.screen_size.x) || gid.y >= uint(p.screen_size.y)){
 		return;
 	}
 	
-	vec2 uv = (vec2(gid) / screen_size);
+	vec2 uv = (vec2(gid) / p.screen_size);
 	
-	// Cria semente para randomizador de raios
-	uint rngState = (gid.x + gid.y * screen_size.x) + NumRenderedFrames * 719393;
+	vec3 view = cam.viewparams;
+	vec3 c_origem = cam.origem;
+	mat4 transf = cam.cam_transf;
 	
-	// Calcular ponto focal
 	//1.0 necessario para inversao de UV
 	vec3 viewPointlocal = vec3((1.0 - uv - 0.5), 1.0) * view;
 	vec3 viewPoint = vec3(transf * vec4(viewPointlocal, 1.0));
 	
-	// Traca multiplos raios e pegue a media
 	Ray ray;
 	ray.origem = c_origem;
 	ray.dir = normalize(viewPoint - ray.origem);
 	
+	uint rngState = gid.x + gid.y * uint(p.screen_size.x);
+	
 	vec3 totalIncomingLight = vec3(0.0);
 	
-	for(int rayIndex = 0; rayIndex < NumRayPerPixel; ++rayIndex){
+	for(int rayIndex = 0; rayIndex < p.NumRayPerPixel; ++rayIndex){
 		totalIncomingLight += Trace(ray, rngState);
+		rngState += p.NumRenderedFrames * 719393u;
 	}
 	
-	vec3 pixelCor = totalIncomingLight / NumRayPerPixel;
+	vec3 pixelCor = totalIncomingLight / p.NumRayPerPixel;
 	
 	vec4 color = vec4(pixelCor.xyz, 1.0);
 	
-	vec4 oldColor = imageLoad(accum_tex, ivec2(gid));
-	float weight = 1.0 / float(NumRenderedFrames + 1);
-	vec4 accumulatedAverage = clamp((oldColor * (1.0 - weight) + color * weight), 0.0, 1.0);
+	vec4 accumulatedAverage;
 	
-	imageStore(accum_tex, ivec2(gid), accumulatedAverage);
+	if(p.NumRenderedFrames == 0){
+		accumulatedAverage = color;
+		imageStore(accum_tex, ivec2(gid), accumulatedAverage);
+	}else{
+		vec4 oldColor = imageLoad(accum_tex, ivec2(gid));
+		float weight = 1.0 / float(p.NumRenderedFrames + 1);
+		accumulatedAverage = clamp((oldColor * (1.0 - weight) + color * weight), 0.0, 1.0);
+		
+		imageStore(accum_tex, ivec2(gid), accumulatedAverage);
+	}	
 	
 	imageStore(screen_tex, ivec2(gid), accumulatedAverage);
 }

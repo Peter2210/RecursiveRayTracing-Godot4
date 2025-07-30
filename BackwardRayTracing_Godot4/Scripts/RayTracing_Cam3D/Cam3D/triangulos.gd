@@ -30,7 +30,7 @@ func find_Triangles(node : Node) -> Array[Dictionary]:
 			var aabb_s :Vector3 = global_aabb.position + global_aabb.size
 			
 			## Obter dados do material da mesh
-			var material : Material = mesh.surface_get_material(0)
+			var material : Material = mesh.surface_get_material(s)
 			var color : Color = material.get("albedo_color")
 			var emission_color : Color = material.get("emission")
 			var roughness = material.get("roughness")

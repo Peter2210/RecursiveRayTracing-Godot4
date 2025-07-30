@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="Scene_Data" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="Scene_Data" load_steps=2 format=3 uid="uid://bu211ptlpb7s"]
 
-[ext_resource type="Script" path="res://Scripts/RayTracing_Cam3D/Recursos/scene2comp.gd" id="1_umafu"]
+[ext_resource type="Script" uid="uid://cn06inwktt6a" path="res://Scripts/RayTracing_Cam3D/Recursos/scene2comp.gd" id="1_umafu"]
 
 [resource]
 script = ExtResource("1_umafu")
@@ -11,7 +11,7 @@ mesh_buffer = RID(5725191405584)
 mesh_number = 8
 accu_tex = RID(5716601471166)
 ready = true
-MaxBounceCount = 3
+MaxBounceCount = 20
 NumRayPerPixel = 5
 SunFocus = 100
 SunIntensity = 20

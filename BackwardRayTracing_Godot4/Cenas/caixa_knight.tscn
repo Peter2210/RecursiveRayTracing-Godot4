@@ -3,7 +3,7 @@
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_puf61"]
 resource_name = "Standard"
 albedo_color = Color(1, 0, 0, 0)
-roughness = 0.5
+roughness = 0.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_cvt7x"]
 _surfaces = [{
@@ -40,7 +40,7 @@ shadow_mesh = SubResource("ArrayMesh_cvt7x")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7elio"]
 resource_name = "Standard"
 albedo_color = Color(0, 0.102086, 1, 0)
-roughness = 0.5
+roughness = 0.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_42e24"]
 _surfaces = [{
@@ -77,7 +77,7 @@ shadow_mesh = SubResource("ArrayMesh_42e24")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u6k88"]
 resource_name = "Standard"
 albedo_color = Color(0.0604372, 1, 0, 0)
-roughness = 0.5
+roughness = 0.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_voixt"]
 _surfaces = [{
@@ -114,7 +114,7 @@ shadow_mesh = SubResource("ArrayMesh_voixt")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fsjf5"]
 resource_name = "Standard"
 albedo_color = Color(1, 1, 1, 0)
-roughness = 0.5
+roughness = 0.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_v2qwt"]
 _surfaces = [{
@@ -150,8 +150,8 @@ shadow_mesh = SubResource("ArrayMesh_v2qwt")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iej08"]
 resource_name = "Standard"
-albedo_color = Color(0.160377, 0.160377, 0.160377, 0)
-roughness = 0.5
+albedo_color = Color(1, 1, 1, 0)
+roughness = 0.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_oruql"]
 _surfaces = [{
@@ -188,7 +188,7 @@ shadow_mesh = SubResource("ArrayMesh_oruql")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_axugm"]
 resource_name = "Standard"
 albedo_color = Color(1, 0.84434, 0.84434, 0)
-roughness = 0.5
+roughness = 0.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_tpnwd"]
 _surfaces = [{
@@ -225,10 +225,9 @@ shadow_mesh = SubResource("ArrayMesh_tpnwd")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e3nuk"]
 resource_name = "Standard"
 albedo_color = Color(12.573, 12.573, 12.573, 0)
-roughness = 0.5
 emission_enabled = true
 emission = Color(1, 1, 1, 1)
-emission_energy_multiplier = 8.0
+emission_energy_multiplier = 11.05
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_o1kyl"]
 _surfaces = [{

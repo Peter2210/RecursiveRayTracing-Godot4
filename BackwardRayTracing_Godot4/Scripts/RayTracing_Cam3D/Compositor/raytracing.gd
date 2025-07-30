@@ -14,15 +14,22 @@ var spheres_buffer : RID = comp.spheres_buffer
 var triangle_buffer : RID = comp.triangle_buffer
 var mesh_buffer : RID = comp.mesh_buffer
 
-# Buffers a serem criados
+## Buffers a serem criados
 var push_constant : PackedByteArray
 var cam_buffer : RID
 var sky_buffer : RID
 var world_buffer : RID
 
+## Uniformes a serem feitos
+var accumulation_image_uniform := RDUniform.new()
+var cam_uniform := RDUniform.new()
+var spheres_uniform := RDUniform.new()
+var triangle_uniform := RDUniform.new()
+var mesh_uniform := RDUniform.new()
+var sky_uniform := RDUniform.new()
+
 ## Dados Auxiliares
 var frame : int = 0
-@export var Acumular : bool
 
 func _init() -> void:
 	comp._reset_state()
@@ -93,6 +100,36 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 			sky_data.append_array(PackedInt32Array([comp.SunIntensity]).to_byte_array())
 			sky_buffer = rd.storage_buffer_create(sky_data.size(), sky_data)
 		
+			# Uniforme da Textura de Acumulação
+			accumulation_image_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_IMAGE
+			accumulation_image_uniform.binding = 1
+			accumulation_image_uniform.add_id(accu_tex)
+			
+			# Uniforme da Camera
+			cam_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
+			cam_uniform.binding = 2
+			cam_uniform.add_id(cam_buffer)
+			
+			# Uniforme das Esferas
+			spheres_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
+			spheres_uniform.binding = 3
+			spheres_uniform.add_id(spheres_buffer)
+			
+			# Uniforme dos Triângulos
+			triangle_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
+			triangle_uniform.binding = 4
+			triangle_uniform.add_id(triangle_buffer)
+			
+			# Uniforme das Mesh
+			mesh_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
+			mesh_uniform.binding = 5
+			mesh_uniform.add_id(mesh_buffer)
+			
+			# Uniforme do ambiente / céu (Opcional)
+			sky_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
+			sky_uniform.binding = 6
+			sky_uniform.add_id(sky_buffer)
+		
 		#Buffer de Numeros Constantes
 		push_constant = PackedFloat32Array([size.x, size.y]).to_byte_array()
 		push_constant.append_array(PackedInt32Array([frame]).to_byte_array())
@@ -102,41 +139,6 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 		push_constant.append_array(PackedInt32Array([comp.spheres_number]).to_byte_array())
 		push_constant.resize(32)
 		
-		# Uniforme da Textura de Acumulação
-		var accumulation_image_uniform := RDUniform.new()
-		accumulation_image_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_IMAGE
-		accumulation_image_uniform.binding = 1
-		accumulation_image_uniform.add_id(accu_tex)
-		
-		# Uniforme da Camera
-		var cam_uniform := RDUniform.new()
-		cam_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
-		cam_uniform.binding = 2
-		cam_uniform.add_id(cam_buffer)
-		
-		# Uniforme das Esferas
-		var spheres_uniform := RDUniform.new()
-		spheres_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
-		spheres_uniform.binding = 3
-		spheres_uniform.add_id(spheres_buffer)
-		
-		# Uniforme dos Triângulos
-		var triangle_uniform := RDUniform.new()
-		triangle_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
-		triangle_uniform.binding = 4
-		triangle_uniform.add_id(triangle_buffer)
-		
-		# Uniforme das Mesh
-		var mesh_uniform := RDUniform.new()
-		mesh_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
-		mesh_uniform.binding = 5
-		mesh_uniform.add_id(mesh_buffer)
-		
-		# Uniforme do ambiente / céu (Opcional)
-		var sky_uniform := RDUniform.new()
-		sky_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
-		sky_uniform.binding = 6
-		sky_uniform.add_id(sky_buffer)
 		
 		# Execução de Compute shader em View ( Camera3D = 1 | CameraVR = 2 )
 		# Uniforme da Textura da Tela

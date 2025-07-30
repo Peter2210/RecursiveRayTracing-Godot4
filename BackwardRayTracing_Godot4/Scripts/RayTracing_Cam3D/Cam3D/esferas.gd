@@ -32,6 +32,7 @@ func find_Spheres(node: Node) -> Array[Dictionary]:
 func make_SphereBuffer(comp : Resource, rd : RenderingDevice):
 	var sphere_array := PackedFloat32Array()
 	if spheres_number == 0:
+		print("number0")
 		sphere_array.append_array([
 				0.0, 0.0, 0.0, 1.0,
 				0.0, 0.0, 0.0, 0.0,
@@ -41,10 +42,11 @@ func make_SphereBuffer(comp : Resource, rd : RenderingDevice):
 				0.0, 0.0, 0.0
 			])
 	else:
+		print("work")
 		for esfera in esferas:
 			sphere_array.append_array([
-				esfera["position"][0], esfera["position"][1], esfera["position"][2], 0.0,
-				esfera["radius"], 0.0, 0.0, 0.0,
+				esfera["position"][0], esfera["position"][1], esfera["position"][2],
+				esfera["radius"],
 				esfera["color"][0], esfera["color"][1], esfera["color"][2], esfera["color"][3],
 				esfera["emission_color"][0], esfera["emission_color"][1], esfera["emission_color"][2], 1.0,
 				esfera["roughness"],
