@@ -3,7 +3,8 @@
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vjuuy"]
 resource_name = "Standard"
 albedo_color = Color(0.971698, 0.0412513, 0.0412513, 0)
-roughness = 0.5
+metallic_specular = 1.0
+roughness = 0.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_yor4e"]
 _surfaces = [{
@@ -40,7 +41,8 @@ shadow_mesh = SubResource("ArrayMesh_yor4e")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_et8vi"]
 resource_name = "Standard"
 albedo_color = Color(0.0313725, 1, 0.0708975, 0)
-roughness = 0.5
+metallic_specular = 1.0
+roughness = 0.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_2ftu1"]
 _surfaces = [{
@@ -77,7 +79,8 @@ shadow_mesh = SubResource("ArrayMesh_2ftu1")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_els7t"]
 resource_name = "Standard"
 albedo_color = Color(0, 0.419978, 0.830189, 0)
-roughness = 0.5
+metallic_specular = 1.0
+roughness = 0.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_4nmgm"]
 _surfaces = [{
@@ -114,7 +117,8 @@ shadow_mesh = SubResource("ArrayMesh_4nmgm")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nj3vp"]
 resource_name = "Standard"
 albedo_color = Color(0.943396, 0.449291, 0.422748, 0)
-roughness = 0.5
+metallic_specular = 1.0
+roughness = 0.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_xeaut"]
 _surfaces = [{
@@ -151,7 +155,8 @@ shadow_mesh = SubResource("ArrayMesh_xeaut")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sqpyr"]
 resource_name = "Standard"
 albedo_color = Color(0.0660377, 0.0660377, 0.0660377, 0)
-roughness = 0.5
+metallic_specular = 1.0
+roughness = 0.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_p8lua"]
 _surfaces = [{
@@ -188,7 +193,8 @@ shadow_mesh = SubResource("ArrayMesh_p8lua")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5b6l6"]
 resource_name = "Standard"
 albedo_color = Color(1, 1, 1, 0)
-roughness = 0.5
+metallic_specular = 1.0
+roughness = 0.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_wm1o1"]
 _surfaces = [{
@@ -265,7 +271,8 @@ shadow_mesh = SubResource("ArrayMesh_d8avd")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ixy51"]
 resource_name = "Standard"
 albedo_color = Color(1, 1, 1, 0)
-roughness = 0.5
+metallic_specular = 0.9
+roughness = 0.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_r24p2"]
 _surfaces = [{
@@ -304,7 +311,8 @@ shadow_mesh = SubResource("ArrayMesh_r24p2")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bh4e3"]
 resource_name = "Standard"
 albedo_color = Color(1, 1, 1, 0)
-roughness = 0.5
+metallic_specular = 0.9
+roughness = 0.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_xq8yd"]
 _surfaces = [{
@@ -343,7 +351,8 @@ shadow_mesh = SubResource("ArrayMesh_xq8yd")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rocdd"]
 resource_name = "Standard"
 albedo_color = Color(0.059, 0.0567307, 0.0567307, 0)
-roughness = 0.5
+metallic_specular = 0.9
+roughness = 0.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_u4vr8"]
 _surfaces = [{

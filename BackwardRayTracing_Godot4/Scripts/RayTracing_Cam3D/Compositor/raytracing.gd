@@ -72,16 +72,14 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 		
 		#Informações de Visualização da Camera3D
 		var aspect : float = scene_proj.get_aspect()
-		var near : float = scene_proj.get_z_near()
 		var fov_y : float = Projection.get_fovy(scene_proj.get_fov(), 1/aspect)
-		var altura_plano : float = near * tan(deg_to_rad(fov_y * 0.5)) * 2.0
+		var altura_plano : float = comp.FocusDistance * tan(deg_to_rad(fov_y * 0.5)) * 2.0
 		var largura_plano : float = altura_plano * aspect
-		
+
 		var origem : PackedFloat32Array = PackedFloat32Array([origin.x, origin.y, origin.z, 0.0])
+		var viewparams : PackedFloat32Array = PackedFloat32Array([largura_plano, altura_plano, -comp.FocusDistance, 0.0])
 		
-		var viewparams : PackedFloat32Array = PackedFloat32Array([largura_plano, altura_plano, near, 0.0])
-		
-		##Criação dos Buffers
+		##Criação dos Buffers (somente na primeira instancia)
 		if frame == 0.0:
 			# Buffer da Camera
 			var cam_data : PackedByteArray
@@ -137,8 +135,9 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 		push_constant.append_array(PackedInt32Array([comp.NumRayPerPixel]).to_byte_array())
 		push_constant.append_array(PackedInt32Array([comp.mesh_number]).to_byte_array())
 		push_constant.append_array(PackedInt32Array([comp.spheres_number]).to_byte_array())
-		push_constant.resize(32)
-		
+		push_constant.append_array(PackedFloat32Array([comp.DefocusStrength]).to_byte_array())
+		push_constant.append_array(PackedFloat32Array([comp.DivergeStrength]).to_byte_array())
+		push_constant.resize(48)
 		
 		# Execução de Compute shader em View ( Camera3D = 1 | CameraVR = 2 )
 		# Uniforme da Textura da Tela

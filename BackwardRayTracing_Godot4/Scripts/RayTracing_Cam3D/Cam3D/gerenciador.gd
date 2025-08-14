@@ -9,7 +9,13 @@ var comp : Resource = preload("res://Scripts/RayTracing_Cam3D/Recursos/ray_data.
 @onready var triangulos: Node = $Triangulos
 @onready var ambiente: Node = $Ambiente
 
-func _ready():
+func initialize_from_camera(max_bounce, rays_per_pixel, defocus, diverge, focus):
+	comp.MaxBounceCount = max_bounce
+	comp.NumRayPerPixel = rays_per_pixel
+	comp.DefocusStrength = defocus
+	comp.DivergeStrength = diverge
+	comp.FocusDistance = focus
+	
 	set_up_shader()
 	comp.ready = true
 	ResourceSaver.save(comp, "res://Scripts/RayTracing_Cam3D/Recursos/ray_data.tres")

@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://dkuix0sq70fce"]
 
 [ext_resource type="Script" uid="uid://bgwewl00egrjx" path="res://Scripts/RayTracing_Cam3D/Compositor/raytracing.gd" id="1_0rd3l"]
-[ext_resource type="Script" uid="uid://bvfpp4ipfsvg3" path="res://Scripts/RayTracing_Cam3D/Cam3D/movimento.gd" id="2_0rd3l"]
+[ext_resource type="Script" uid="uid://bvfpp4ipfsvg3" path="res://Scripts/RayTracing_Cam3D/Cam3D/controle.gd" id="2_0rd3l"]
 [ext_resource type="Script" uid="uid://btkcg8m36ntm1" path="res://Scripts/RayTracing_Cam3D/Cam3D/gerenciador.gd" id="3_tuapm"]
 [ext_resource type="Script" uid="uid://1jm165nnahfi" path="res://Scripts/RayTracing_Cam3D/Cam3D/esferas.gd" id="4_lx7fh"]
 [ext_resource type="Script" uid="uid://dpg0c6p8fxt6f" path="res://Scripts/RayTracing_Cam3D/Cam3D/triangulos.gd" id="5_upn1n"]

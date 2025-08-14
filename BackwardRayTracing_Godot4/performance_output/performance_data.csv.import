@@ -1,0 +1,15 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://d0nshyfay7hgy"
+valid=false
+
+[deps]
+
+source_file="res://performance_output/performance_data.csv"
+
+[params]
+
+compress=true
+delimiter=0

@@ -20,8 +20,12 @@ class_name Scene_Data
 @export var ready : bool = false
 
 # Comportamento do raio
-@export var MaxBounceCount : int = 3
-@export var NumRayPerPixel : int = 5
+@export var MaxBounceCount : int
+@export var NumRayPerPixel : int
+
+@export var DefocusStrength : float
+@export var DivergeStrength : float
+@export var FocusDistance : float
 
 # Dados do céu
 var GroundColour : Array = [0.350, 0.300, 0.350, 0.000]
