@@ -24,7 +24,7 @@ The original Ray Tracing logic was made by **Sebastian Lague** in this really gr
 
 - **Godot Engine 4.4.1**
 - **GDScript + GLSL (Compute Shaders)**
-- **Original project in Unity (([referência](https://github.com/SebLague/Ray-Tracing/tree/Episode01?tab=readme-ov-file)))**
+- **Original project in Unity ([referência](https://github.com/SebLague/Ray-Tracing/tree/Episode01?tab=readme-ov-file))**
 
 ---
 
