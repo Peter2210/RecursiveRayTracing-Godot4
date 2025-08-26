@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="Scene_Data" load_steps=2 format=3 uid="uid://ccbjwxixglntb"]
+
+[ext_resource type="Script" uid="uid://cn06inwktt6a" path="res://Scripts/RayTracing_Cam3D/Recursos/scene2comp.gd" id="1_umafu"]
+
+[resource]
+script = ExtResource("1_umafu")
+spheres_buffer = RID(5720896438287)
+spheres_number = 0
+triangle_buffer = RID(5729486372881)
+mesh_buffer = RID(5725191405584)
+mesh_number = 8
+accu_tex = RID(5716601471166)
+ready = true
+MaxBounceCount = 3
+NumRayPerPixel = 5
+DefocusStrength = 0.0
+DivergeStrength = 0.5
+FocusDistance = 1.0
+SunFocus = 100
+SunIntensity = 20

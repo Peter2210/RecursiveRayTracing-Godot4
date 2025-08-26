@@ -1,0 +1,85 @@
+[gd_scene load_steps=8 format=3 uid="uid://dxyc8dc6x7ac7"]
+
+[ext_resource type="PackedScene" uid="uid://dkuix0sq70fce" path="res://Cenas/raytracing_camera_3d.tscn" id="1_uu4ma"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uu4ma"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_t3r0n"]
+material = SubResource("StandardMaterial3D_uu4ma")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t3r0n"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 16.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_0afiq"]
+material = SubResource("StandardMaterial3D_t3r0n")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_llexx"]
+albedo_color = Color(1, 0, 0, 1)
+metallic_specular = 1.0
+roughness = 0.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_ljxhg"]
+material = SubResource("StandardMaterial3D_llexx")
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Camera3D" parent="." instance=ExtResource("1_uu4ma")]
+transform = Transform3D(-3.84107e-08, -0.477312, 0.878734, -2.0864e-08, 0.878734, 0.477312, -1, -1.77636e-15, -4.37114e-08, 3.21423, 2.0659, 0)
+
+[node name="Parede" type="MeshInstance3D" parent="."]
+transform = Transform3D(10.1755, 0, 0, 0, 10.1755, 0, 0, 0, 10.1755, 0, 0, 0)
+mesh = SubResource("PlaneMesh_t3r0n")
+
+[node name="MeshInstance3D13" type="MeshInstance3D" parent="."]
+transform = Transform3D(10.1755, 0, 0, 0, 10.1755, 0, 0, 0, 10.1755, 0, 4.14117, 0)
+mesh = SubResource("PlaneMesh_t3r0n")
+
+[node name="MeshInstance3D11" type="MeshInstance3D" parent="."]
+transform = Transform3D(10.1755, 0, 0, 0, -0.076365, -10.1752, 0, 10.1752, -0.076365, 0, 0, -3.71581)
+mesh = SubResource("PlaneMesh_t3r0n")
+
+[node name="MeshInstance3D12" type="MeshInstance3D" parent="."]
+transform = Transform3D(-7.04313, 10.276, -0.064657, 0, -0.0909557, -10.1606, -11.2644, -6.42514, 0.0404273, -4.44285, 3.04216, -3.71581)
+mesh = SubResource("PlaneMesh_t3r0n")
+
+[node name="MeshInstance3D14" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1.78164, -12.0099, 0.0755666, 0, -0.0909557, -10.1606, 13.165, -1.6253, 0.0102264, 1.36037, 0, -3.71581)
+mesh = SubResource("PlaneMesh_t3r0n")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.507333, 0)
+mesh = SubResource("SphereMesh_0afiq")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.36731, 0.507333, 0)
+mesh = SubResource("SphereMesh_ljxhg")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.36731, 0.507333, 1.22185)
+mesh = SubResource("SphereMesh_ljxhg")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.108057, 0.507333, 1.22185)
+mesh = SubResource("SphereMesh_ljxhg")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.108057, 0.507333, 2.2809)
+mesh = SubResource("SphereMesh_ljxhg")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20947, 0.507333, 2.2809)
+mesh = SubResource("SphereMesh_ljxhg")
+
+[node name="MeshInstance3D8" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20947, 1.62283, 2.2809)
+mesh = SubResource("SphereMesh_ljxhg")
+
+[node name="MeshInstance3D9" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20947, 1.62283, -1.97843)
+mesh = SubResource("SphereMesh_ljxhg")
+
+[node name="MeshInstance3D10" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20947, 0.569884, -1.59816)
+mesh = SubResource("SphereMesh_ljxhg")
