@@ -31,12 +31,13 @@ func find_Triangles(node : Node) -> Array[Dictionary]:
 			
 			## Obter dados do material da mesh
 			var material : Material = mesh.surface_get_material(s)
-			var color : Color = material.get("albedo_color")
-			var emission_color : Color = material.get("emission")
-			var specular_color = [1.0, 1.0, 1.0, 1.0]
-			var roughness = 1-material.get("roughness")
-			var emission_strenght : float = material.get("emission_energy_multiplier")
-			var spec_probab = material.get("metallic_specular")
+			var color  = material.get("shader_parameter/albedo")
+			var emission_color = material.get("shader_parameter/EmissionColour")
+			var specular_color = material.get("shader_parameter/SpecularColour")
+			var roughness = material.get("shader_parameter/Smoothness")
+			var emission_strenght : float = material.get("shader_parameter/EmissionStrength")
+			var spec_probab = material.get("shader_parameter/specular")
+			var flag : int = material.get("shader_parameter/flag")
 			
 			malhas.append({
 				"tri_index": triangulos.size(),
@@ -48,7 +49,8 @@ func find_Triangles(node : Node) -> Array[Dictionary]:
 				"especular_color": specular_color,
 				"roughness": roughness,
 				"emission_strenght": emission_strenght,
-				"spec_probab": spec_probab
+				"spec_probab": spec_probab,
+				"flag": flag
 			})
 			
 			## Transformação das vértices para cena global
@@ -88,7 +90,8 @@ func make_MeshBuffer(comp : Resource, rd : RenderingDevice):
 		mesh_data.append_array(PackedFloat32Array([malha["material"][0], malha["material"][1], malha["material"][2],malha["material"][3]]).to_byte_array())
 		mesh_data.append_array(PackedFloat32Array([malha["emission_color"][0], malha["emission_color"][1], malha["emission_color"][2],1.0]).to_byte_array())
 		mesh_data.append_array(PackedFloat32Array([malha["especular_color"][0], malha["especular_color"][1], malha["especular_color"][2],1.0]).to_byte_array())
-		mesh_data.append_array(PackedFloat32Array([malha["roughness"], malha["emission_strenght"], malha["spec_probab"], 0.0]).to_byte_array())
+		mesh_data.append_array(PackedFloat32Array([malha["roughness"], malha["emission_strenght"], malha["spec_probab"]]).to_byte_array())
+		mesh_data.append_array(PackedInt32Array([malha["flag"]]).to_byte_array())
 	var mesh_buffer : RID = rd.storage_buffer_create(mesh_data.size(), mesh_data)
 	comp.mesh_buffer = mesh_buffer
 	comp.mesh_number = malhas.size()

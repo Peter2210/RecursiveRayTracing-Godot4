@@ -20,7 +20,7 @@ func _ready():
 	_max_duration_seconds = max_duration_minutes * 60.0
 
 	# CSV Header matching Unity
-	_csv_lines.append("Time;FPS;ProcessTime(ms);PhysicsTime(ms);TotalAlloc();Memory_Used(MB);DrawCalls;ObjectCount")
+	_csv_lines.append("Time;FPS;ProcessTime(ms);PhysicsTime(ms);Memory_Used(MB);DrawCalls;ObjectCount")
 
 	_take_screenshot("screenshot_00.png")
 
@@ -85,7 +85,6 @@ func _save_csv():
 	for line in _csv_lines:
 		file.store_line(line)
 	file.close()
-
 
 func _take_screenshot(filename: String):
 	await RenderingServer.frame_post_draw

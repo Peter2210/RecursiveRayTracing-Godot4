@@ -2,7 +2,6 @@ extends Camera3D
 
 @onready var gerenciador: Node = $Gerenciador
 
-
 @export_category("Definição de Raios")
 @export var MaxBounceCount : int = 3
 @export var NumRayPerPixel : int = 3
