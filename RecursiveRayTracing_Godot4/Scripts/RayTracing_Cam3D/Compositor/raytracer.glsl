@@ -16,6 +16,8 @@ layout(rgba16f, binding = 1, set = 0) uniform image2D accum_tex;
 layout(push_constant) uniform Params{
 	vec2 screen_size;
 	int NumRenderedFrames;
+	bool accumulate;
+	bool useSky;
 	int MaxBounceCount;
 	int NumRayPerPixel;
 	int NumMeshes;
@@ -285,7 +287,9 @@ vec3 Trace(in Ray ray, in uint state){
 			rayColour *= 1.0 / p;
 			
 		}else{
-			//incomingLight += GetEnviromentLight(ray) * rayColour;
+			if (p.useSky) {
+				incomingLight += GetEnviromentLight(ray) * rayColour;
+			}
 			break;
 		}
 	}
@@ -333,11 +337,16 @@ void main() {
 	
 	vec4 color = vec4(pixelCor.xyz, 1.0);
 	
-	vec4 oldColor = imageLoad(accum_tex, ivec2(gid));
+	vec4 display;
 	
-	imageStore(accum_tex, ivec2(gid), oldColor + color);
+	if (p.accumulate){
+		vec4 oldColor = imageLoad(accum_tex, ivec2(gid));
+		imageStore(accum_tex, ivec2(gid), oldColor + color);
+		display = clamp( ((oldColor + color) / float(NumRenderedFrames + 1)), 0.0, 1.0);
+	}  else {
+		display = color;
+	}
 	
-	vec4 display = clamp( ((oldColor + color) / float(NumRenderedFrames + 1)), 0.0, 1.0);
 	
 	imageStore(screen_tex, ivec2(gid), display);
 }

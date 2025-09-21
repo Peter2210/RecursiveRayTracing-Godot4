@@ -445,5 +445,4 @@ skeleton = NodePath("")
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 2, -5.49)
 visible = false
 fov = 60.0
-MaxBounceCount = 3
 NumRayPerPixel = 5

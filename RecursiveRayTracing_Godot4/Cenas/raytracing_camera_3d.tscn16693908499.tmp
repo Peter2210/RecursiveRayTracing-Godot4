@@ -26,6 +26,9 @@ compositor = SubResource("Compositor_txgtr")
 near = 0.1
 far = 1000.0
 script = ExtResource("2_0rd3l")
+rayTracingEnabled = true
+MaxBounceCount = 6
+DivergeStrength = 0.5
 
 [node name="Gerenciador" type="Node" parent="."]
 script = ExtResource("3_tuapm")

@@ -1,7 +1,8 @@
 extends Resource
 
-class_name Scene_Data
+class_name SceneData
 
+@export_category("Identifiers")
 #Endereço do Buffer das Esferas e sua quantidade
 @export var spheres_buffer: RID
 @export var spheres_number: int
@@ -16,10 +17,14 @@ class_name Scene_Data
 #Endereço da Texture de Acumulação
 @export var accu_tex: RID
 
-# Preparo Executado
-@export var ready : bool = false
+@export_category("Main Configuration")
+@export var rayTracingEnabled : bool
+@export var accumulate : bool
+@export var useSky : bool
+@export var SunFocus : float
+@export var SunIntensity : float
+@export var sunColor : Color
 
-# Comportamento do raio
 @export var MaxBounceCount : int
 @export var NumRayPerPixel : int
 
@@ -32,8 +37,3 @@ var GroundColour : Array = [0.350, 0.300, 0.350, 0.000]
 var ColourHorizon : Array = [1.000, 1.000, 1.000, 0.000]
 var ColourZenith : Array = [0.079, 0.365, 0.726, 0.000]
 var SunLightDirection : Array
-@export var SunFocus : int = 100
-@export var SunIntensity : int = 20
-
-func _reset_state():
-	ready = false

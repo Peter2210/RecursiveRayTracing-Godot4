@@ -3,13 +3,18 @@ extends Node
 @onready var tree : Window = get_tree().root
 
 var rd : RenderingDevice = RenderingServer.get_rendering_device()
-var comp : Resource = preload("res://Scripts/RayTracing_Cam3D/Recursos/ray_data.tres")
+var comp : Resource = load("res://Scripts/RayTracing_Cam3D/Recursos/ray_data.tres")
 
 @onready var esferas: Node = $Esferas
 @onready var triangulos: Node = $Triangulos
 @onready var ambiente: Node = $Ambiente
 
-func initialize_from_camera(max_bounce, rays_per_pixel, defocus, diverge, focus):
+func initialize_from_camera(accumulate, useSky, sunFocus, sunIntensity, sunColor, max_bounce, rays_per_pixel, defocus, diverge, focus):
+	comp.accumulate = accumulate
+	comp.useSky = useSky
+	comp.SunFocus = sunFocus
+	comp.SunIntensity = sunIntensity
+	comp.sunColor = sunColor
 	comp.MaxBounceCount = max_bounce
 	comp.NumRayPerPixel = rays_per_pixel
 	comp.DefocusStrength = defocus
@@ -17,7 +22,6 @@ func initialize_from_camera(max_bounce, rays_per_pixel, defocus, diverge, focus)
 	comp.FocusDistance = focus
 	
 	set_up_shader()
-	comp.ready = true
 	ResourceSaver.save(comp, "res://Scripts/RayTracing_Cam3D/Recursos/ray_data.tres")
 
 func set_up_shader():

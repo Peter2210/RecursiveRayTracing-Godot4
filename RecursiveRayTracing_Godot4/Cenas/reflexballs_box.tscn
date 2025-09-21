@@ -486,5 +486,5 @@ mesh = SubResource("SphereMesh_dlcgl")
 skeleton = NodePath("")
 
 [node name="Camera3D" parent="." instance=ExtResource("1_ppb4g")]
-transform = Transform3D(-1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, -1, -1.1, -1.2, -5.8)
+transform = Transform3D(-1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, -1, -1.04, -1.2, -5.8)
 fov = 60.0

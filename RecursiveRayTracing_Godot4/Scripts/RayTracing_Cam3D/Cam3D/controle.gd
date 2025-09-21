@@ -2,21 +2,26 @@ extends Camera3D
 
 @onready var gerenciador: Node = $Gerenciador
 
-@export_category("Definição de Raios")
+@export_category("Main Configuration")
+@export var rayTracingEnabled : bool = false
+@export var accumulate : bool = false
+@export var useSky : bool = false
+@export var sunFocus : float = 500
+@export var sunIntensity : float = 10
+@export var sunColor : Color = Color.WHITE
+
 @export var MaxBounceCount : int = 3
 @export var NumRayPerPixel : int = 3
 
-@export_category("Definição de Foco")
 @export var DefocusStrength : float = 0.0
 @export var DivergeStrength : float = 0.0
 @export var FocusDistance : float = 1.0
-"""
-@export var DefocusStrength : float = 50.0
-@export var DivergeStrength : float = 0.1
-@export var FocusDistance : float = 5.0
-"""
 
-@export_category("Movimento de Câmera")
+@export_category("References")
+@export_file var RayTracingCompositor : String = "res://Scripts/RayTracing_Cam3D/Compositor/raytracing.gd"
+@export_file var RayTracingShader : String = "res://Scripts/RayTracing_Cam3D/Compositor/raytracer.glsl"
+
+@export_category("Camera Moviment")
 @export var mouse_sensitivity : float = 1.0
 @export var move_speed : float = 0.1
 
@@ -27,13 +32,20 @@ func _input(event):
 			rotate_object_local(Vector3(1.0, 0.0, 0.0), deg_to_rad(event.relative.y * mouse_sensitivity))
 
 func _ready() -> void:
-	gerenciador.initialize_from_camera(
-		MaxBounceCount,
-		NumRayPerPixel,
-		DefocusStrength,
-		DivergeStrength,
-		FocusDistance
-	)
+	if rayTracingEnabled:
+		gerenciador.initialize_from_camera(
+			accumulate,
+			useSky,
+			sunFocus,
+			sunIntensity,
+			sunColor,
+			MaxBounceCount,
+			NumRayPerPixel,
+			DefocusStrength,
+			DivergeStrength,
+			FocusDistance
+		)
+		compositor.compositor_effects.front().enabled = true
 
 func _process(_delta):
 	if Input.is_action_pressed("RMB"):

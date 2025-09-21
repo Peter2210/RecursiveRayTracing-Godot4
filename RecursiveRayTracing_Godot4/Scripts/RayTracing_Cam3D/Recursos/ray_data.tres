@@ -1,20 +1,23 @@
-[gd_resource type="Resource" script_class="Scene_Data" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="SceneData" load_steps=2 format=3 uid="uid://t6vxolfigqxo"]
 
-[ext_resource type="Script" path="res://Scripts/RayTracing_Cam3D/Recursos/scene2comp.gd" id="1_umafu"]
+[ext_resource type="Script" uid="uid://cn06inwktt6a" path="res://Scripts/RayTracing_Cam3D/Recursos/scene2comp.gd" id="1_56qum"]
 
 [resource]
-script = ExtResource("1_umafu")
-spheres_buffer = RID(5647881994255)
+script = ExtResource("1_56qum")
+spheres_buffer = RID(5501853106191)
 spheres_number = 0
-triangle_buffer = RID(5656471928849)
-mesh_buffer = RID(5652176961552)
-mesh_number = 10
-accu_tex = RID(5643587027134)
-ready = true
-MaxBounceCount = 16
-NumRayPerPixel = 2
+triangle_buffer = RID(5510443040785)
+mesh_buffer = RID(5506148073488)
+mesh_number = 8
+accu_tex = RID(5497558139070)
+rayTracingEnabled = false
+accumulate = false
+useSky = false
+SunFocus = 500.0
+SunIntensity = 10.0
+sunColor = Color(1, 1, 1, 1)
+MaxBounceCount = 3
+NumRayPerPixel = 5
 DefocusStrength = 0.0
-DivergeStrength = 0.5
+DivergeStrength = 0.0
 FocusDistance = 1.0
-SunFocus = 100
-SunIntensity = 20
