@@ -32,6 +32,8 @@ class_name SceneData
 @export var DivergeStrength : float
 @export var FocusDistance : float
 
+@export var Distance : float
+
 # Dados do céu
 var GroundColour : Array = [0.350, 0.300, 0.350, 0.000]
 var ColourHorizon : Array = [1.000, 1.000, 1.000, 0.000]

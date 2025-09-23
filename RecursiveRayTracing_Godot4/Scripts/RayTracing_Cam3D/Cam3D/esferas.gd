@@ -3,9 +3,9 @@ extends Node
 var esferas : Array[Dictionary]
 var spheres_number : int = 0
 
-func set_SphereBuffer(tree : Window, comp : Resource, rd : RenderingDevice):
+func set_SphereBuffer(tree : Window, data : Resource, rd : RenderingDevice):
 	find_Spheres(tree)
-	make_SphereBuffer(comp, rd)
+	make_SphereBuffer(data, rd)
 
 func find_Spheres(node: Node) -> Array[Dictionary]:
 	if node is MeshInstance3D and node.mesh is SphereMesh:
@@ -36,29 +36,32 @@ func find_Spheres(node: Node) -> Array[Dictionary]:
 		find_Spheres(child)
 	return esferas
 
-func make_SphereBuffer(comp : Resource, rd : RenderingDevice):
+func make_SphereBuffer(data : Resource, rd : RenderingDevice):
 	var sphere_data : PackedByteArray
 	if spheres_number == 0:
 		emptyBuffer(sphere_data)
-	else:	
+	else:
 		for esfera in esferas:
-			sphere_data.append_array(PackedFloat32Array([esfera["position"][0], esfera["position"][1], esfera["position"][2], esfera["radius"]]).to_byte_array())
-			sphere_data.append_array(PackedFloat32Array([esfera["color"][0], esfera["color"][1], esfera["color"][2], esfera["color"][3]]).to_byte_array())
-			sphere_data.append_array(PackedFloat32Array([esfera["emission_color"][0], esfera["emission_color"][1], esfera["emission_color"][2], 1.0]).to_byte_array())
-			sphere_data.append_array(PackedFloat32Array([esfera["especular_color"][0], esfera["especular_color"][1], esfera["especular_color"][2], esfera["especular_color"][3]]).to_byte_array())
-			sphere_data.append_array(PackedFloat32Array([esfera["roughness"], esfera["emission_strenght"], esfera["spec_probab"]]).to_byte_array())
+			sphere_data.append_array(
+				PackedFloat32Array([
+					esfera["position"][0], esfera["position"][1], esfera["position"][2], esfera["radius"],
+					esfera["color"][0], esfera["color"][1], esfera["color"][2], esfera["color"][3],
+					esfera["emission_color"][0], esfera["emission_color"][1], esfera["emission_color"][2], 1.0,
+					esfera["especular_color"][0], esfera["especular_color"][1], esfera["especular_color"][2], esfera["especular_color"][3],
+					esfera["roughness"], esfera["emission_strenght"], esfera["spec_probab"]
+					]).to_byte_array())
 			sphere_data.append_array(PackedInt32Array([esfera["flag"]]).to_byte_array())
 
 	var spheres_buffer : RID = rd.storage_buffer_create(sphere_data.size(), sphere_data)
-	comp.spheres_buffer = spheres_buffer
-	comp.spheres_number = spheres_number
+	data.spheres_buffer = spheres_buffer
+	data.spheres_number = spheres_number
 
 func emptyBuffer(sphere_data : PackedByteArray):
 	sphere_data.append_array(PackedFloat32Array([
-		1.0, 1.0, 1.0, 1.0,
-		1.0, 1.0, 1.0, 1.0,
-		1.0, 1.0, 1.0, 1.0,
-		1.0, 1.0, 1.0, 1.0,
-		1.0, 1.0, 1.0
+		0.0, 0.0, 0.0, 0.0,
+		0.0, 0.0, 0.0, 0.0,
+		0.0, 0.0, 0.0, 0.0,
+		0.0, 0.0, 0.0, 0.0,
+		0.0, 0.0, 0.0
 		]).to_byte_array())
 	sphere_data.append_array(PackedInt32Array([1]).to_byte_array())

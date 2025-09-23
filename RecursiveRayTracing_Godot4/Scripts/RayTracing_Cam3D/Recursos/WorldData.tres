@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SceneData" load_steps=2 format=3 uid="uid://btfdeyfy3a5y0"]
+
+[ext_resource type="Script" uid="uid://cn06inwktt6a" path="res://Scripts/RayTracing_Cam3D/Recursos/scene2comp.gd" id="1_sqqxs"]
+
+[resource]
+script = ExtResource("1_sqqxs")
+spheres_buffer = RID(4763118731280)
+spheres_number = 4
+triangle_buffer = RID(4771708665874)
+mesh_buffer = RID(4767413698577)
+mesh_number = 7
+accu_tex = RID(4758823763999)
+SunFocus = 500.0
+SunIntensity = 10.0
+sunColor = Color(1, 1, 1, 1)
+MaxBounceCount = 3
+NumRayPerPixel = 3
+FocusDistance = 1.0
+Distance = 50.0

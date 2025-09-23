@@ -6,7 +6,7 @@ var shader : RID
 var pipeline : RID
 
 ## Acesso aos Recursos
-var comp := load("res://Scripts/RayTracing_Cam3D/Recursos/ray_data.tres")
+var data : Resource
 
 ## Buffers a serem criados
 var push_constant : PackedByteArray
@@ -43,8 +43,9 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 	
 	if not rd: return
 	
-	if frame < 1:
-		comp = load("res://Scripts/RayTracing_Cam3D/Recursos/ray_data.tres")
+	if !data:
+		data = load("uid://btfdeyfy3a5y0")
+		
 	##Acesso aos buffers do Renderizador
 	var scene_buffers : RenderSceneBuffersRD = render_data.get_render_scene_buffers()
 	if not scene_buffers: return
@@ -70,11 +71,11 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 	#Informações de Visualização da Camera3D
 	var aspect : float = scene_proj.get_aspect()
 	var fov_y : float = Projection.get_fovy(scene_proj.get_fov(), 1/aspect)
-	var altura_plano : float = comp.FocusDistance * tan(deg_to_rad(fov_y * 0.5)) * 2.0
+	var altura_plano : float = data.FocusDistance * tan(deg_to_rad(fov_y * 0.5)) * 2.0
 	var largura_plano : float = altura_plano * aspect
 
 	var origem : PackedFloat32Array = PackedFloat32Array([origin.x, origin.y, origin.z, 0.0])
-	var viewparams : PackedFloat32Array = PackedFloat32Array([largura_plano, altura_plano, -comp.FocusDistance, 0.0])
+	var viewparams : PackedFloat32Array = PackedFloat32Array([largura_plano, altura_plano, -data.FocusDistance, 0.0])
 	
 	##Criação dos Buffers (somente na primeira instancia)
 	if frame == 0.0:
@@ -87,18 +88,18 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 		
 		# Buffer do ambiente / céu (Opcional)
 		var sky_data : PackedByteArray
-		sky_data.append_array(PackedFloat32Array(comp.GroundColour).to_byte_array())
-		sky_data.append_array(PackedFloat32Array(comp.ColourHorizon).to_byte_array())
-		sky_data.append_array(PackedFloat32Array(comp.ColourZenith).to_byte_array())
-		sky_data.append_array(PackedFloat32Array(comp.SunLightDirection).to_byte_array())
-		sky_data.append_array(PackedInt32Array([comp.SunFocus]).to_byte_array())
-		sky_data.append_array(PackedInt32Array([comp.SunIntensity]).to_byte_array())
+		sky_data.append_array(PackedFloat32Array(data.GroundColour).to_byte_array())
+		sky_data.append_array(PackedFloat32Array(data.ColourHorizon).to_byte_array())
+		sky_data.append_array(PackedFloat32Array(data.ColourZenith).to_byte_array())
+		sky_data.append_array(PackedFloat32Array(data.SunLightDirection).to_byte_array())
+		sky_data.append_array(PackedInt32Array([data.SunFocus]).to_byte_array())
+		sky_data.append_array(PackedInt32Array([data.SunIntensity]).to_byte_array())
 		sky_buffer = rd.storage_buffer_create(sky_data.size(), sky_data)
 		
 		# Uniforme da Textura de Acumulação
 		accumulation_image_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_IMAGE
 		accumulation_image_uniform.binding = 1
-		accumulation_image_uniform.add_id(comp.accu_tex)
+		accumulation_image_uniform.add_id(data.accu_tex)
 		
 		# Uniforme da Camera
 		cam_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
@@ -108,17 +109,17 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 		# Uniforme das Esferas
 		spheres_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
 		spheres_uniform.binding = 3
-		spheres_uniform.add_id(comp.spheres_buffer)
+		spheres_uniform.add_id(data.spheres_buffer)
 		
 		# Uniforme dos Triângulos
 		triangle_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
 		triangle_uniform.binding = 4
-		triangle_uniform.add_id(comp.triangle_buffer)
+		triangle_uniform.add_id(data.triangle_buffer)
 		
 		# Uniforme das Mesh
 		mesh_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
 		mesh_uniform.binding = 5
-		mesh_uniform.add_id(comp.mesh_buffer)
+		mesh_uniform.add_id(data.mesh_buffer)
 		
 		# Uniforme do ambiente / céu (Opcional)
 		sky_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
@@ -127,13 +128,13 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 	
 	#Buffer de Numeros Constantes
 	push_constant = PackedFloat32Array([size.x, size.y]).to_byte_array()
-	push_constant.append_array(PackedInt32Array([frame, comp.accumulate, comp.useSky]).to_byte_array())
-	push_constant.append_array(PackedInt32Array([comp.MaxBounceCount, comp.NumRayPerPixel]).to_byte_array())
-	push_constant.append_array(PackedInt32Array([comp.mesh_number, comp.spheres_number]).to_byte_array())
-	push_constant.append_array(PackedFloat32Array([comp.DefocusStrength, comp.DivergeStrength]).to_byte_array())
+	push_constant.append_array(PackedInt32Array([frame, data.accumulate, data.useSky]).to_byte_array())
+	push_constant.append_array(PackedInt32Array([data.MaxBounceCount, data.NumRayPerPixel]).to_byte_array())
+	push_constant.append_array(PackedInt32Array([data.mesh_number, data.spheres_number]).to_byte_array())
+	push_constant.append_array(PackedFloat32Array([data.DefocusStrength, data.DivergeStrength]).to_byte_array())
 	push_constant.resize(48)
 	
-	# Execução de Compute shader em View ( Camera3D = 1 | CameraVR = 2 )
+	# Execução de dataute shader em View ( Camera3D = 1 | CameraVR = 2 )
 	# Uniforme da Textura da Tela
 	var screen_tex : RID = scene_buffers.get_color_layer(0)
 	var image_uniform : RDUniform = RDUniform.new()
@@ -169,7 +170,7 @@ func initialize_compute_shader() -> void:
 	if not rd: return
 	
 	#Carregar Compute Shader criado
-	var glsl_file : RDShaderFile = load("res://Scripts/RayTracing_Cam3D/Compositor/raytracer.glsl")
+	var glsl_file : RDShaderFile = load("uid://b512hio4r8md2")
 	shader = rd.shader_create_from_spirv(glsl_file.get_spirv())
 	pipeline = rd.compute_pipeline_create(shader)
 

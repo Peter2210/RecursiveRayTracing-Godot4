@@ -9,7 +9,7 @@ func _ready() -> void:
 	#var comp = SceneData.new()
 	
 	# Caminho onde salvar o recurso
-	var path = "res://Scripts/RayTracing_Cam3D/Recursos/ray_data.tres"
+	var path = "res://Scripts/RayTracing_Cam3D/Recursos/WorldData.tres"
 	
 	# Salva o recurso no disco
 	var err = ResourceSaver.save(comp, path)
