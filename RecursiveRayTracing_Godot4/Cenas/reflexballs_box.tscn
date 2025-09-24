@@ -1,7 +1,8 @@
-[gd_scene load_steps=32 format=4 uid="uid://byn6ur7ldt5v3"]
+[gd_scene load_steps=33 format=4 uid="uid://byn6ur7ldt5v3"]
 
 [ext_resource type="Shader" uid="uid://cayf3rvr6vahm" path="res://Shaders/RayTracing.gdshader" id="1_24n4l"]
 [ext_resource type="PackedScene" uid="uid://dkuix0sq70fce" path="res://Cenas/raytracing_camera_3d.tscn" id="1_ppb4g"]
+[ext_resource type="PackedScene" uid="uid://bedum1v3fmvv1" path="res://Objetos/DragonBox.glb" id="3_kst01"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kst01"]
 render_priority = 0
@@ -489,3 +490,5 @@ skeleton = NodePath("")
 transform = Transform3D(-1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, -1, -1.04, -1.2, -5.8)
 fov = 60.0
 Visual = 1
+
+[node name="DragonBox2" parent="." instance=ExtResource("3_kst01")]

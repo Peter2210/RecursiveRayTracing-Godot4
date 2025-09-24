@@ -120,7 +120,7 @@ func make_TriangleBuffer(data : Resource, rd : RenderingDevice):
 					]).to_byte_array())
 	var triangle_buffer : RID = rd.storage_buffer_create(triangle_data.size(), triangle_data)
 	data.triangle_buffer = triangle_buffer
-	
+
 func emptyMeshBuffer(mesh_data : PackedByteArray):
 	mesh_data.append_array(PackedInt32Array([1, 1, 1, 1]).to_byte_array())
 	mesh_data.append_array(PackedFloat32Array([
@@ -132,7 +132,6 @@ func emptyMeshBuffer(mesh_data : PackedByteArray):
 		0.0, 0.0, 0.0
 		]).to_byte_array())
 	mesh_data.append_array(PackedInt32Array([1, 1, 1, 1]).to_byte_array())
-	
 
 func emptyTriangleBuffer(triangle_data : PackedByteArray):
 	triangle_data.append_array(PackedFloat32Array([
