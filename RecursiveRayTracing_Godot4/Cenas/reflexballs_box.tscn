@@ -1,12 +1,25 @@
-[gd_scene load_steps=31 format=4 uid="uid://byn6ur7ldt5v3"]
+[gd_scene load_steps=33 format=4 uid="uid://byn6ur7ldt5v3"]
 
+[ext_resource type="Shader" uid="uid://cayf3rvr6vahm" path="res://Shaders/RayTracing.gdshader" id="1_24n4l"]
 [ext_resource type="PackedScene" uid="uid://dkuix0sq70fce" path="res://Cenas/raytracing_camera_3d.tscn" id="1_ppb4g"]
+[ext_resource type="PackedScene" uid="uid://bedum1v3fmvv1" path="res://Objetos/DragonBox.glb" id="3_kst01"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u1d8f"]
-resource_name = "Standard"
-albedo_color = Color(0.971698, 0, 0, 0)
-metallic_specular = 1.0
-roughness = 0.0
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kst01"]
+render_priority = 0
+shader = ExtResource("1_24n4l")
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
+shader_parameter/uv1_scale = Vector3(0, 0, 0)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(0, 0, 0)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/metallic = 0.0
+shader_parameter/albedo = Color(0.972549, 0, 0, 1)
+shader_parameter/EmissionColour = Color(0, 0, 0, 1)
+shader_parameter/SpecularColour = Color(1, 1, 1, 1)
+shader_parameter/EmissionStrength = 0.0
+shader_parameter/Smoothness = 0.0
+shader_parameter/specular = 0.0
+shader_parameter/flag = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_vh0x8"]
 _surfaces = [{
@@ -30,7 +43,7 @@ _surfaces = [{
 "format": 34896613431,
 "index_count": 36,
 "index_data": PackedByteArray("AAABAAIAAAACAAMABAAFAAYABAAGAAcACAAJAAoACAAKAAsADAANAA4ADAAOAA8AEAARABIAEAASABMAFAAVABYAFAAWABcA"),
-"material": SubResource("StandardMaterial3D_u1d8f"),
+"material": SubResource("ShaderMaterial_kst01"),
 "name": "Standard",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -40,11 +53,22 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_vh0x8")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bfydb"]
-resource_name = "Standard"
-albedo_color = Color(0.103603, 1, 0.0313725, 0)
-metallic_specular = 1.0
-roughness = 0.0
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0dxeg"]
+render_priority = 0
+shader = ExtResource("1_24n4l")
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
+shader_parameter/uv1_scale = Vector3(0, 0, 0)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(0, 0, 0)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/metallic = 0.0
+shader_parameter/albedo = Color(0.101961, 1, 0.0313726, 1)
+shader_parameter/EmissionColour = Color(0, 0, 0, 1)
+shader_parameter/SpecularColour = Color(1, 1, 1, 1)
+shader_parameter/EmissionStrength = 0.0
+shader_parameter/Smoothness = 0.0
+shader_parameter/specular = 0.0
+shader_parameter/flag = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_es6kw"]
 _surfaces = [{
@@ -68,7 +92,7 @@ _surfaces = [{
 "format": 34896613431,
 "index_count": 36,
 "index_data": PackedByteArray("AAABAAIAAAACAAMABAAFAAYABAAGAAcACAAJAAoACAAKAAsADAANAA4ADAAOAA8AEAARABIAEAASABMAFAAVABYAFAAWABcA"),
-"material": SubResource("StandardMaterial3D_bfydb"),
+"material": SubResource("ShaderMaterial_0dxeg"),
 "name": "Standard",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -78,11 +102,22 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_es6kw")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v01t2"]
-resource_name = "Standard"
-albedo_color = Color(0.132431, 0.389188, 0.90566, 0)
-metallic_specular = 1.0
-roughness = 0.0
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wache"]
+render_priority = 0
+shader = ExtResource("1_24n4l")
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
+shader_parameter/uv1_scale = Vector3(0, 0, 0)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(0, 0, 0)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/metallic = 0.0
+shader_parameter/albedo = Color(0.133333, 0.388235, 0.905882, 1)
+shader_parameter/EmissionColour = Color(0, 0, 0, 1)
+shader_parameter/SpecularColour = Color(1, 1, 1, 1)
+shader_parameter/EmissionStrength = 0.0
+shader_parameter/Smoothness = 1.0
+shader_parameter/specular = 0.0
+shader_parameter/flag = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_qh6xx"]
 _surfaces = [{
@@ -106,7 +141,7 @@ _surfaces = [{
 "format": 34896613431,
 "index_count": 36,
 "index_data": PackedByteArray("AAABAAIAAAACAAMABAAFAAYABAAGAAcACAAJAAoACAAKAAsADAANAA4ADAAOAA8AEAARABIAEAASABMAFAAVABYAFAAWABcA"),
-"material": SubResource("StandardMaterial3D_v01t2"),
+"material": SubResource("ShaderMaterial_wache"),
 "name": "Standard",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -116,11 +151,22 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_qh6xx")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bpuci"]
-resource_name = "Standard"
-albedo_color = Color(1, 1, 1, 0)
-metallic_specular = 1.0
-roughness = 0.0
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r5kbe"]
+render_priority = 0
+shader = ExtResource("1_24n4l")
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
+shader_parameter/uv1_scale = Vector3(0, 0, 0)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(0, 0, 0)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/metallic = 0.0
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/EmissionColour = Color(0, 0, 0, 1)
+shader_parameter/SpecularColour = Color(0, 0, 0, 1)
+shader_parameter/EmissionStrength = 0.0
+shader_parameter/Smoothness = 0.0
+shader_parameter/specular = 0.0
+shader_parameter/flag = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_pkcap"]
 _surfaces = [{
@@ -144,7 +190,7 @@ _surfaces = [{
 "format": 34359742487,
 "index_count": 6,
 "index_data": PackedByteArray("AAABAAIAAQAAAAMA"),
-"material": SubResource("StandardMaterial3D_bpuci"),
+"material": SubResource("ShaderMaterial_r5kbe"),
 "name": "Standard",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -154,11 +200,22 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_pkcap")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rfdau"]
-resource_name = "Standard"
-albedo_color = Color(0.150943, 0.150943, 0.150943, 0)
-metallic_specular = 1.0
-roughness = 0.0
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dlcgl"]
+render_priority = 0
+shader = ExtResource("1_24n4l")
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
+shader_parameter/uv1_scale = Vector3(0, 0, 0)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(0, 0, 0)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/metallic = 0.0
+shader_parameter/albedo = Color(0.14902, 0.14902, 0.14902, 1)
+shader_parameter/EmissionColour = Color(0, 0, 0, 1)
+shader_parameter/SpecularColour = Color(0, 0, 0, 1)
+shader_parameter/EmissionStrength = 0.0
+shader_parameter/Smoothness = 0.0
+shader_parameter/specular = 0.0
+shader_parameter/flag = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_5mxxu"]
 _surfaces = [{
@@ -182,7 +239,7 @@ _surfaces = [{
 "format": 34896613431,
 "index_count": 36,
 "index_data": PackedByteArray("AAABAAIAAAACAAMABAAFAAYABAAGAAcACAAJAAoACAAKAAsADAANAA4ADAAOAA8AEAARABIAEAASABMAFAAVABYAFAAWABcA"),
-"material": SubResource("StandardMaterial3D_rfdau"),
+"material": SubResource("ShaderMaterial_dlcgl"),
 "name": "Standard",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -192,11 +249,22 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_5mxxu")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ys1d8"]
-resource_name = "Standard"
-albedo_color = Color(1, 1, 1, 0)
-metallic_specular = 1.0
-roughness = 0.0
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pq0wl"]
+render_priority = 0
+shader = ExtResource("1_24n4l")
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
+shader_parameter/uv1_scale = Vector3(0, 0, 0)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(0, 0, 0)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/metallic = 0.0
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/EmissionColour = Color(0.0313726, 0.0313726, 0.0313726, 1)
+shader_parameter/SpecularColour = Color(1, 1, 1, 1)
+shader_parameter/EmissionStrength = 0.0
+shader_parameter/Smoothness = 1.0
+shader_parameter/specular = 0.09
+shader_parameter/flag = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_112yl"]
 _surfaces = [{
@@ -220,7 +288,7 @@ _surfaces = [{
 "format": 34896613431,
 "index_count": 36,
 "index_data": PackedByteArray("AAABAAIAAAACAAMABAAFAAYABAAGAAcACAAJAAoACAAKAAsADAANAA4ADAAOAA8AEAARABIAEAASABMAFAAVABYAFAAWABcA"),
-"material": SubResource("StandardMaterial3D_ys1d8"),
+"material": SubResource("ShaderMaterial_pq0wl"),
 "name": "Standard",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -230,13 +298,22 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_112yl")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jk07w"]
-resource_name = "Standard"
-albedo_color = Color(11.0206, 11.0175, 8.7471, 0)
-metallic_specular = 1.0
-emission_enabled = true
-emission = Color(1, 1, 0.776471, 1)
-emission_energy_multiplier = 13.0
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iqdns"]
+render_priority = 0
+shader = ExtResource("1_24n4l")
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
+shader_parameter/uv1_scale = Vector3(0, 0, 0)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(0, 0, 0)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/metallic = 0.0
+shader_parameter/albedo = Color(0, 0, 0, 1)
+shader_parameter/EmissionColour = Color(1, 1, 0.776471, 1)
+shader_parameter/SpecularColour = Color(0, 0, 0, 1)
+shader_parameter/EmissionStrength = 13.0
+shader_parameter/Smoothness = 0.0
+shader_parameter/specular = 0.0
+shader_parameter/flag = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_bn377"]
 _surfaces = [{
@@ -260,7 +337,7 @@ _surfaces = [{
 "format": 34896613431,
 "index_count": 36,
 "index_data": PackedByteArray("AAABAAIAAAACAAMABAAFAAYABAAGAAcACAAJAAoACAAKAAsADAANAA4ADAAOAA8AEAARABIAEAASABMAFAAVABYAFAAWABcA"),
-"material": SubResource("StandardMaterial3D_jk07w"),
+"material": SubResource("ShaderMaterial_iqdns"),
 "name": "Standard",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -270,32 +347,85 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_bn377")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v0bkg"]
-metallic_specular = 1.0
-roughness = 0.3
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s5pdq"]
+render_priority = 0
+shader = ExtResource("1_24n4l")
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
+shader_parameter/uv1_scale = Vector3(0, 0, 0)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(0, 0, 0)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/metallic = 0.0
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/EmissionColour = Color(1, 1, 1, 1)
+shader_parameter/SpecularColour = Color(1, 1, 1, 1)
+shader_parameter/EmissionStrength = 0.0
+shader_parameter/Smoothness = 0.3
+shader_parameter/specular = 1.0
+shader_parameter/flag = 0
 
 [sub_resource type="SphereMesh" id="SphereMesh_ppb4g"]
-material = SubResource("StandardMaterial3D_v0bkg")
+material = SubResource("ShaderMaterial_s5pdq")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_24n4l"]
-metallic_specular = 1.0
-roughness = 0.62
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mwfsm"]
+render_priority = 0
+shader = ExtResource("1_24n4l")
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
+shader_parameter/uv1_scale = Vector3(0, 0, 0)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(0, 0, 0)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/metallic = 0.0
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/EmissionColour = Color(1, 1, 1, 1)
+shader_parameter/SpecularColour = Color(1, 1, 1, 1)
+shader_parameter/EmissionStrength = 0.0
+shader_parameter/Smoothness = 0.62
+shader_parameter/specular = 1.0
+shader_parameter/flag = 0
 
 [sub_resource type="SphereMesh" id="SphereMesh_kst01"]
-material = SubResource("StandardMaterial3D_24n4l")
+material = SubResource("ShaderMaterial_mwfsm")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0dxeg"]
-metallic_specular = 1.0
-roughness = 0.88
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k43id"]
+render_priority = 0
+shader = ExtResource("1_24n4l")
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
+shader_parameter/uv1_scale = Vector3(0, 0, 0)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(0, 0, 0)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/metallic = 0.0
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/EmissionColour = Color(1, 1, 1, 1)
+shader_parameter/SpecularColour = Color(1, 1, 1, 1)
+shader_parameter/EmissionStrength = 0.0
+shader_parameter/Smoothness = 0.88
+shader_parameter/specular = 1.0
+shader_parameter/flag = 0
 
 [sub_resource type="SphereMesh" id="SphereMesh_wache"]
-material = SubResource("StandardMaterial3D_0dxeg")
+material = SubResource("ShaderMaterial_k43id")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r5kbe"]
-metallic_specular = 1.0
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h6f3y"]
+render_priority = 0
+shader = ExtResource("1_24n4l")
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
+shader_parameter/uv1_scale = Vector3(0, 0, 0)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(0, 0, 0)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/metallic = 0.0
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/EmissionColour = Color(1, 1, 1, 1)
+shader_parameter/SpecularColour = Color(1, 1, 1, 1)
+shader_parameter/EmissionStrength = 0.0
+shader_parameter/Smoothness = 1.0
+shader_parameter/specular = 1.0
+shader_parameter/flag = 0
 
 [sub_resource type="SphereMesh" id="SphereMesh_dlcgl"]
-material = SubResource("StandardMaterial3D_r5kbe")
+material = SubResource("ShaderMaterial_h6f3y")
 
 [node name="reflexballs_box" type="Node3D"]
 
@@ -357,5 +487,8 @@ mesh = SubResource("SphereMesh_dlcgl")
 skeleton = NodePath("")
 
 [node name="Camera3D" parent="." instance=ExtResource("1_ppb4g")]
-transform = Transform3D(-1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, -1, -1, -1.2, -5.8)
+transform = Transform3D(-1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, -1, -1.04, -1.2, -5.8)
 fov = 60.0
+Visual = 1
+
+[node name="DragonBox2" parent="." instance=ExtResource("3_kst01")]

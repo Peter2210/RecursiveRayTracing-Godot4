@@ -6,7 +6,8 @@ layout(local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
 //Variaveis Globais
 const float infinity = 1. / 0.;
 const float PI = 3.1415;
-
+const int CheckerPattern = 1;
+const int InvisibleLightSource = 2;
 layout(rgba16f, binding = 0, set = 0) uniform image2D screen_tex;
 
 layout(rgba16f, binding = 1, set = 0) uniform image2D accum_tex;
@@ -15,6 +16,8 @@ layout(rgba16f, binding = 1, set = 0) uniform image2D accum_tex;
 layout(push_constant) uniform Params{
 	vec2 screen_size;
 	int NumRenderedFrames;
+	bool accumulate;
+	bool useSky;
 	int MaxBounceCount;
 	int NumRayPerPixel;
 	int NumMeshes;
@@ -51,6 +54,7 @@ struct RayTracingMaterial {
 	float roughness;
 	float emissionStrength;
 	float specularProbability;
+	int flag;
 };
 
 struct Sphere {
@@ -109,7 +113,7 @@ struct HitInfo{
 
 //Calcula intercecao de raio com esfera
 HitInfo RaySphere(in Ray ray, in vec3 sphereCentre, in float sphereRadius){
-	HitInfo hitInfo = HitInfo(false, infinity, vec3(0.0), vec3(0.0), RayTracingMaterial(vec4(0.0), vec4(0.0), vec4(0.0), 0.0, 0.0, 0.0));
+	HitInfo hitInfo = HitInfo(false, infinity, vec3(0.0), vec3(0.0), RayTracingMaterial(vec4(0.0), vec4(0.0), vec4(0.0), 0.0, 0.0, 0.0, 0));
 	
 	vec3 offsetRayOrigin = ray.origem - sphereCentre;
 	
@@ -134,7 +138,7 @@ HitInfo RaySphere(in Ray ray, in vec3 sphereCentre, in float sphereRadius){
 
 //Calcula intercecao de raio com triangulos
 HitInfo RayTriangle(in Ray ray, in Triangle tri){
-	HitInfo hitInfo = HitInfo(false, infinity, vec3(0.0), vec3(0.0), RayTracingMaterial(vec4(0.0), vec4(0.0), vec4(0.0), 0.0, 0.0, 0.0));
+	HitInfo hitInfo = HitInfo(false, infinity, vec3(0.0), vec3(0.0), RayTracingMaterial(vec4(0.0), vec4(0.0), vec4(0.0), 0.0, 0.0, 0.0, 0));
 	
 	vec3 edgeAB = tri.posB - tri.posA;
 	vec3 edgeAC = tri.posC - tri.posA;
@@ -173,7 +177,7 @@ bool RayBoundingBox(in Ray ray, in vec3 boxMin, in vec3 boxMax) {
 
 //Encontra primeiro ponto onde raio colidiu retornando informacoes
 HitInfo CalculateRayColision(in Ray ray){
-	HitInfo closestHit = HitInfo(false, infinity, vec3(0.0), vec3(0.0), RayTracingMaterial(vec4(0.0), vec4(0.0), vec4(0.0), 0.0, 0.0, 0.0));
+	HitInfo closestHit = HitInfo(false, infinity, vec3(0.0), vec3(0.0), RayTracingMaterial(vec4(0.0), vec4(0.0), vec4(0.0), 0.0, 0.0, 0.0, 0));
 	for (int i = 0; i < NumberSpheres; ++i){
 		HitInfo hitInfo = RaySphere(ray, spheres[i].position, spheres[i].radius);
 		
@@ -257,16 +261,24 @@ vec3 Trace(in Ray ray, in uint state){
 		if(hitInfo.didHit){
 			RayTracingMaterial material = hitInfo.material;
 			
+			if(material.flag == InvisibleLightSource && i == 0){
+				ray.origem = hitInfo.hitPoint + ray.dir * 0.001;
+				continue;
+			} else if(material.flag == CheckerPattern){
+				vec2 c = mod(floor(hitInfo.hitPoint.xz), 2.0);
+				material.color = c.x == c.y ? material.color : material.emissionColour;
+			}
+			
 			ray.origem = hitInfo.hitPoint;
 			vec3 diffuseDir = normalize(hitInfo.normal + RandomDirection(state));
 			vec3 specularDir = reflect(ray.dir, hitInfo.normal);
 			bool isSpecularBounce = material.specularProbability >= RandomValue(state);
-			ray.dir = normalize(mix(specularDir, diffuseDir, material.roughness * float(isSpecularBounce)));
-			
+			int Result = int(isSpecularBounce);
+			ray.dir = normalize(mix(diffuseDir, specularDir, material.roughness * Result));
 			
 			vec3 emittedLight = material.emissionColour.xyz * material.emissionStrength;
 			incomingLight += emittedLight * rayColour;
-			rayColour *= mix(material.specularColour.xyz, material.color.xyz, (float(isSpecularBounce)));
+			rayColour *= mix(material.color.xyz, material.specularColour.xyz, Result);
 			
 			float p = max(rayColour.x, max(rayColour.y, rayColour.z));
 			if(RandomValue(state) >= p) {
@@ -275,7 +287,9 @@ vec3 Trace(in Ray ray, in uint state){
 			rayColour *= 1.0 / p;
 			
 		}else{
-			//incomingLight += GetEnviromentLight(ray) * rayColour;
+			if (p.useSky) {
+				incomingLight += GetEnviromentLight(ray) * rayColour;
+			}
 			break;
 		}
 	}
@@ -323,11 +337,16 @@ void main() {
 	
 	vec4 color = vec4(pixelCor.xyz, 1.0);
 	
-	vec4 oldColor = imageLoad(accum_tex, ivec2(gid));
+	vec4 display;
 	
-	imageStore(accum_tex, ivec2(gid), oldColor + color);
+	if (p.accumulate){
+		vec4 oldColor = imageLoad(accum_tex, ivec2(gid));
+		imageStore(accum_tex, ivec2(gid), oldColor + color);
+		display = clamp( ((oldColor + color) / float(NumRenderedFrames + 1)), 0.0, 1.0);
+	}  else {
+		display = color;
+	}
 	
-	vec4 display = clamp( ((oldColor + color) / float(NumRenderedFrames + 1)), 0.0, 1.0);
 	
 	imageStore(screen_tex, ivec2(gid), display);
 }

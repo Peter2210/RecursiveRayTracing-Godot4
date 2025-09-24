@@ -1,12 +1,24 @@
-[gd_scene load_steps=26 format=4 uid="uid://c18thrdl8lcxw"]
+[gd_scene load_steps=27 format=4 uid="uid://c18thrdl8lcxw"]
 
 [ext_resource type="PackedScene" uid="uid://dkuix0sq70fce" path="res://Cenas/raytracing_camera_3d.tscn" id="1_adp6o"]
+[ext_resource type="Shader" uid="uid://cayf3rvr6vahm" path="res://Shaders/RayTracing.gdshader" id="1_io0qk"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_puf61"]
-resource_name = "Standard"
-albedo_color = Color(1, 0, 0, 0)
-metallic_specular = 1.0
-roughness = 0.0
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_io0qk"]
+render_priority = 0
+shader = ExtResource("1_io0qk")
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
+shader_parameter/uv1_scale = Vector3(0, 0, 0)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(0, 0, 0)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/metallic = 0.0
+shader_parameter/albedo = Color(1, 0, 0, 1)
+shader_parameter/EmissionColour = Color(0, 0, 0, 1)
+shader_parameter/SpecularColour = Color(1, 1, 1, 1)
+shader_parameter/EmissionStrength = 0.0
+shader_parameter/Smoothness = 1.0
+shader_parameter/specular = 0.0
+shader_parameter/flag = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_cvt7x"]
 _surfaces = [{
@@ -30,7 +42,7 @@ _surfaces = [{
 "format": 34896613431,
 "index_count": 36,
 "index_data": PackedByteArray("AAABAAIAAAACAAMABAAFAAYABAAGAAcACAAJAAoACAAKAAsADAANAA4ADAAOAA8AEAARABIAEAASABMAFAAVABYAFAAWABcA"),
-"material": SubResource("StandardMaterial3D_puf61"),
+"material": SubResource("ShaderMaterial_io0qk"),
 "name": "Standard",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -40,11 +52,22 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_cvt7x")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7elio"]
-resource_name = "Standard"
-albedo_color = Color(0, 0.102086, 1, 0)
-metallic_specular = 1.0
-roughness = 0.0
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_se76a"]
+render_priority = 0
+shader = ExtResource("1_io0qk")
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
+shader_parameter/uv1_scale = Vector3(0, 0, 0)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(0, 0, 0)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/metallic = 0.0
+shader_parameter/albedo = Color(0, 0, 1, 1)
+shader_parameter/EmissionColour = Color(0, 0, 0, 1)
+shader_parameter/SpecularColour = Color(0, 0, 0, 1)
+shader_parameter/EmissionStrength = 0.0
+shader_parameter/Smoothness = 1.0
+shader_parameter/specular = 0.0
+shader_parameter/flag = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_42e24"]
 _surfaces = [{
@@ -68,7 +91,7 @@ _surfaces = [{
 "format": 34896613431,
 "index_count": 36,
 "index_data": PackedByteArray("AAABAAIAAAACAAMABAAFAAYABAAGAAcACAAJAAoACAAKAAsADAANAA4ADAAOAA8AEAARABIAEAASABMAFAAVABYAFAAWABcA"),
-"material": SubResource("StandardMaterial3D_7elio"),
+"material": SubResource("ShaderMaterial_se76a"),
 "name": "Standard",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -78,11 +101,22 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_42e24")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u6k88"]
-resource_name = "Standard"
-albedo_color = Color(0.0604372, 1, 0, 0)
-metallic_specular = 1.0
-roughness = 0.0
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j7b58"]
+render_priority = 0
+shader = ExtResource("1_io0qk")
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
+shader_parameter/uv1_scale = Vector3(0, 0, 0)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(0, 0, 0)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/metallic = 0.0
+shader_parameter/albedo = Color(0.223529, 1, 0, 1)
+shader_parameter/EmissionColour = Color(0.0196078, 0.254902, 0.054902, 1)
+shader_parameter/SpecularColour = Color(0, 0, 0, 1)
+shader_parameter/EmissionStrength = 0.0
+shader_parameter/Smoothness = 1.0
+shader_parameter/specular = 0.0
+shader_parameter/flag = 1
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_voixt"]
 _surfaces = [{
@@ -106,7 +140,7 @@ _surfaces = [{
 "format": 34896613431,
 "index_count": 36,
 "index_data": PackedByteArray("AAABAAIAAAACAAMABAAFAAYABAAGAAcACAAJAAoACAAKAAsADAANAA4ADAAOAA8AEAARABIAEAASABMAFAAVABYAFAAWABcA"),
-"material": SubResource("StandardMaterial3D_u6k88"),
+"material": SubResource("ShaderMaterial_j7b58"),
 "name": "Standard",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -116,11 +150,22 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_voixt")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fsjf5"]
-resource_name = "Standard"
-albedo_color = Color(1, 1, 1, 0)
-metallic_specular = 1.0
-roughness = 0.0
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ai1jo"]
+render_priority = 0
+shader = ExtResource("1_io0qk")
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
+shader_parameter/uv1_scale = Vector3(0, 0, 0)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(0, 0, 0)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/metallic = 0.0
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/EmissionColour = Color(0, 0, 0, 1)
+shader_parameter/SpecularColour = Color(0, 0, 0, 1)
+shader_parameter/EmissionStrength = 0.0
+shader_parameter/Smoothness = 1.0
+shader_parameter/specular = 0.0
+shader_parameter/flag = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_v2qwt"]
 _surfaces = [{
@@ -144,7 +189,7 @@ _surfaces = [{
 "format": 34896613431,
 "index_count": 36,
 "index_data": PackedByteArray("AAABAAIAAAACAAMABAAFAAYABAAGAAcACAAJAAoACAAKAAsADAANAA4ADAAOAA8AEAARABIAEAASABMAFAAVABYAFAAWABcA"),
-"material": SubResource("StandardMaterial3D_fsjf5"),
+"material": SubResource("ShaderMaterial_ai1jo"),
 "name": "Standard",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -154,11 +199,22 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_v2qwt")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iej08"]
-resource_name = "Standard"
-albedo_color = Color(0.160377, 0.160377, 0.160377, 0)
-metallic_specular = 1.0
-roughness = 0.0
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w3v14"]
+render_priority = 0
+shader = ExtResource("1_io0qk")
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
+shader_parameter/uv1_scale = Vector3(0, 0, 0)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(0, 0, 0)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/metallic = 0.0
+shader_parameter/albedo = Color(0.160784, 0.160784, 0.160784, 1)
+shader_parameter/EmissionColour = Color(0, 0, 0, 1)
+shader_parameter/SpecularColour = Color(0, 0, 0, 1)
+shader_parameter/EmissionStrength = 0.0
+shader_parameter/Smoothness = 1.0
+shader_parameter/specular = 0.0
+shader_parameter/flag = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_oruql"]
 _surfaces = [{
@@ -182,7 +238,7 @@ _surfaces = [{
 "format": 34896613431,
 "index_count": 36,
 "index_data": PackedByteArray("AAABAAIAAAACAAMABAAFAAYABAAGAAcACAAJAAoACAAKAAsADAANAA4ADAAOAA8AEAARABIAEAASABMAFAAVABYAFAAWABcA"),
-"material": SubResource("StandardMaterial3D_iej08"),
+"material": SubResource("ShaderMaterial_w3v14"),
 "name": "Standard",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -192,11 +248,22 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_oruql")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_axugm"]
-resource_name = "Standard"
-albedo_color = Color(1, 0.84434, 0.84434, 0)
-metallic_specular = 1.0
-roughness = 0.0
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oghlp"]
+render_priority = 0
+shader = ExtResource("1_io0qk")
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
+shader_parameter/uv1_scale = Vector3(0, 0, 0)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(0, 0, 0)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/metallic = 0.0
+shader_parameter/albedo = Color(1, 0.843137, 0.843137, 1)
+shader_parameter/EmissionColour = Color(0, 0, 0, 1)
+shader_parameter/SpecularColour = Color(0, 0, 0, 1)
+shader_parameter/EmissionStrength = 0.0
+shader_parameter/Smoothness = 1.0
+shader_parameter/specular = 0.0
+shader_parameter/flag = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_tpnwd"]
 _surfaces = [{
@@ -220,7 +287,7 @@ _surfaces = [{
 "format": 34359742487,
 "index_count": 6,
 "index_data": PackedByteArray("AAABAAIAAQAAAAMA"),
-"material": SubResource("StandardMaterial3D_axugm"),
+"material": SubResource("ShaderMaterial_oghlp"),
 "name": "Standard",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -230,14 +297,22 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_tpnwd")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e3nuk"]
-resource_name = "Standard"
-albedo_color = Color(12.573, 12.573, 12.573, 0)
-metallic_specular = 1.0
-roughness = 0.0
-emission_enabled = true
-emission = Color(1, 1, 1, 1)
-emission_energy_multiplier = 15.0
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6jicx"]
+render_priority = 0
+shader = ExtResource("1_io0qk")
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
+shader_parameter/uv1_scale = Vector3(0, 0, 0)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(0, 0, 0)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/metallic = 0.0
+shader_parameter/albedo = Color(0, 0, 0, 1)
+shader_parameter/EmissionColour = Color(1, 1, 1, 1)
+shader_parameter/SpecularColour = Color(1, 1, 1, 1)
+shader_parameter/EmissionStrength = 13.0
+shader_parameter/Smoothness = 0.0
+shader_parameter/specular = 0.0
+shader_parameter/flag = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_o1kyl"]
 _surfaces = [{
@@ -261,7 +336,7 @@ _surfaces = [{
 "format": 34896613431,
 "index_count": 36,
 "index_data": PackedByteArray("AAABAAIAAAACAAMABAAFAAYABAAGAAcACAAJAAoACAAKAAsADAANAA4ADAAOAA8AEAARABIAEAASABMAFAAVABYAFAAWABcA"),
-"material": SubResource("StandardMaterial3D_e3nuk"),
+"material": SubResource("ShaderMaterial_6jicx"),
 "name": "Standard",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -271,11 +346,22 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_o1kyl")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q7gu5"]
-resource_name = "Standard"
-albedo_color = Color(1, 1, 1, 0)
-metallic_specular = 1.0
-roughness = 0.0
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u8rtq"]
+render_priority = 0
+shader = ExtResource("1_io0qk")
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
+shader_parameter/uv1_scale = Vector3(0, 0, 0)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(0, 0, 0)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/metallic = 0.0
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/EmissionColour = Color(1, 1, 1, 1)
+shader_parameter/SpecularColour = Color(1, 1, 1, 1)
+shader_parameter/EmissionStrength = 0.0
+shader_parameter/Smoothness = 1.0
+shader_parameter/specular = 0.0
+shader_parameter/flag = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_wfbth"]
 _surfaces = [{
@@ -301,7 +387,7 @@ _surfaces = [{
 "index_count": 1368,
 "index_data": PackedByteArray("uAAMALkAbwC6ALsAcwC8AL0AvgC/AAYAwADBAMIAeADDAGwAxACLAMUAxADGAIsAiQDGAMQAiQDHAMYAdgDIAMkAdgDKAMgAdgDLAMoAdgDMAMsAJwCdAJ4AJwCeAJ8AKwDNAM4AKwDOAM8AoQCgANAAoQDQANEApgCnAKgApgCoAC8AqwDSANMAqwDTAKkAsQDUANUAsQDVADEA1gCqADYA1gA2ANcA2ADWANcA2ADXANkA2gDbANwA2gDcAD0A3QDeAI8A3QCPAD8A3wAsACgA3wAoAOAA4QDfAOAA4QDgAOIA4wDkAOUA4wDlAOYAlQDnAEIAlQBCAOgA6QDqAOsA6QCWAOoA7ACWAOkA7ADtAJYASADuAJsASACbAO8A8ABJAPEA8ADxAPIA8wAOAPQA8wD1AA4A9gD1APMA9gD3APUAfAD3APYAfAAUAPcA+AD5AHIA+AByAPoA+wD8AP0A+wD9AP4A/wB+AH8A/wB/ABYAAAEBAQIBAAECAXEAcAADAQQBcAAEAQUBBgEHAQgBBgEIAQgACQEKARsACQEbAB4ACwEMAQ0ACwENAA0BDgEPAW4ADgFuABABDgEQAQ8AEQESARMBEQETARQBFQEWAQkAFQEXARYBGAEWARcBGAEHABYBGQGAABoBGQEaARsBHQAcAR0BHQAdAR4BHwEgASEBHwEhAWYAIgEjASQBIgEkASUBJgFdAFwAJgEnAV0AKAEnASYBKAFbACcBKQEqAU8AKQFPAFIAKwEsAS0BKwEtAS4BLwEwATEBLwExATIBMwE0ATUBMwE1ATYBNwE4ATkBNwE5AToBOwF0ADwBOwE8AT0BPgE/AUABPgFAAUEBQgFDAUQBQgFEAUUBHABGARoAHAAaAEcBSAFJARAASAEQAEoBXgBfAGAAXgBhAF8AYgBjAGEAYgBkAGMASwFMAU0BSwFNAU4BTwFQAVEBTwFRAVIBUwFUAVUBUwFVAVYBVwFYAVkBVwFZAVoBWwFcAV0BWwFdAV4BZwBfAWABZwBgAWEBYgELAGMBYgFjAWQBZQESAGYBZQFmAWcBaAFpAWoBaAFqAWsBbAFtAW4BbAFuAW8BcAFxAXIBcAFzAXEBdAFzAXABdAF1AXMBdgF3AXgBdgF4AXkBegEjAHsBegF7AYYAfAGCACEAfAEhAH0BfgF/AVgAfgGAAX8BVgCAAX4BVgCBAYABggGBAIMBggGDAYQBhQGGAYcBhQGHAYgBiQGKAU0AiQFNAIsBjAGNAU4AjAFOAI4BjwGXAEQAjwFEAJABkQFKAJwAkQGcAJIBkwGUAZUBkwGYAJQBlgGYAJMBlgGXAZgAmAGZAZoBmAGaAZsBnAEwAC0AnAEtAJ0BngE5AJ8BngE3ADkAoAE3AJ4BoAEuADcAoQEyAKIBoQGiAaMBpAGlAaYBpAGmAacBqAGpAaoBqAGqAVEAqwGsAa0BqwGtAa4BrwGwAbEBrwGxAbIBEwCzAbQBEwC0AXUAtQG2AbcBtQG3AbgBuQG6AbsBuQG8AboBuQG9AbwBuQERAL0BtwC+Ab8BtwC/AUwASwDAAcEBSwDBAbIAtQDCAcMBtQDEAcIBxQHEAbUAxQHGAcQBxwHIAckBxwHJAcoBywGKAMwBywHMAc0BzgHPAdABzgHQAZAA0QE7ANIB0QHSAdMB1AHRAdMB1AHTAdUB1gHXAdgB1gHYAZEA2QHaARgA2QEYANsB3AHdAd4B3AHeAd8B4AHhAeIB4AHiAeMB5AHlAeYB5AHmAecB6AHpAeoB6AHqAesB7AHtAe4B7AHuAe8B8AHxAfIB8AHyAfMB9AH1AfYB9AH2AfcB+AH5AfoB+AH6AfsBJQD8Af0BJQD9Af4B/wEAAgEC/wEBAgIChAADAgQChAAEAgUCBgIHAggCBgIIAgkCPAAKAgsCPAALAgwCDQI8AAwCDQIMAowADgIPAikADgIpACoAogAQAhECogARAqQApQASAhMCpQATAqMArgCvAK0ArgCtAKwAsAA0ABQCsAAUAhUCFgIXAhgCFgIYAhkCGgIbAhwCGgIdAhsCHgIdAhoCHgIfAh0CIAI+ACECIAIhAiICIwKSAJMAIwKTACQCJQImAicCJQIoAiYCKQIoAiUCKQIqAigCKwIsAi0CKwItAi4CLwIwAkMALwJDADECQQAyAjMCQQAzApQANAJBAJQANAKUADUCmgA2AjcCmgA3AjgCOQI6AjsCOQI7AkcAPAI9AgAAPAIAAD4CPwI8Aj4CPwI+AnsAQAI/AnsAQAJ7ABUAQQJCAm0AQQJtAEMCRAJFAkYCRAJGAkcCSAJJAkoCSAJKAn0ASwJqAEwCSwJMAk0CaQBOAk8CaQBPAlACawAEAFECawBRAlICUwIfAFQCUwJUAlUCVgJXAgMAVgIDAFgCWQJaAlsCWQJcAloCWQICAFwCXQJeAl8CXQJfAmACYQJiAmMCYQJjAmQCIABlAmYCIABmAmcCaAJlAGkCaAJpAmoCawJsArMAawKzAG0CbgJZAFoAbgJaAG8CcAJuAm8CcAJvAnECcgJzAnQCcgJ0AnUCdgJ3AngCdgJ4AnkCegJ7AnwCegJ8An0CfgJ/AoACfgKAAoECggKDAoQCggKEAoUChgKHAogChgKIAnkAiQKKAosCiQKLAowCjQKOAo8CjQKPApACkQKSAhkAkQIZAJMClAKVAgEAlAIBAJYClwKYApkClwKZApoCmwKcAp0CmwKdAp4CnwKgAqECnwKhAqICowKkAqUCowKlAqYCpwKoAqkCpwKpAqoCaACrAqwCaACsAq0CrgKvArACrgKwAgUAsQKyArMCsQKzAgoAtAK1ArYCtAK2ArcCuAK5AroCuAK6ArsCvAK9Ar4CvAK+Ar8CwAK8Ar8CwAK/AsECwgLDAsQCwgLEAsUCxgKHAMcCxgLHAiQAyALJAiIAyAIiAIMAygJXAMsCygLLAswCzQLKAswCzQLMAs4CzwLQAtECzwLRAtIC0wLUAtUC0wLVAtYC1wK2AFQA1wJUANgC2QLaAlAA2QJQANsC3ALdAkUA3AJFAJkA3gLfAuAC3gLgAkYA4QLiAuMC4QLjAuQC5QLhAuQC5QLkAuYC5wLoAukC5wLpAuoC6wLsAjUA6wI1ADMA7QLuAu8C7QLvAjoA8ALtAjoA8AI6ADgA8QLyAvMC8QLzAvQC9QL2AvcC9QL3AvgC+QL6AvsC+QL7AvwC/QL+Av8C/QL/AgADAQMCAwMDAQMDAwQDdwB6AAUDdwAFAwYDBwMIAwkDBwMJAwoDtABVAAsDtAALAwwDUwANAw4DUwAOAw8DEAMRAxIDEAMSAxMDFAMQAxMDFAMTAxUDFgMXAxgDFgMYAxkDjgAaAxsDjgAbA40AHANAAB0DHAMdAx4DHwMgAyEDHwMiAyADIwMiAx8DIwMkAyIDJQMmAycDJQMnAygDKQMqAxcAKQMXACsDLAMtAy4DLAMuAy8DMAMxAzIDMAMyAzMDNAM1AzYDNAM2AzcDOAM5AzoDOAM6AzsDPAM9Az4DPAM+Az8DQANBAyYAQAMmAEIDQwNEA0UDQwNFA0YDRwNIA0kDRwNJA0oDiABLA0wDiABMA00DTgNPA1ADTgNQA1EDhQBSA1MDhQBTA1QDVQNWA1cDVQNXA1gD"),
 "lods": [0.00214788, PackedByteArray("aQABAAIAaQACAAMAaQADAAYABQAGAAMABAAGAAUAaQAGAGoAawAEAAgABAAHAAgACAAHAAkAAABpAGoAbABqAAYAbAAGAAoAAABqAG0AbABtAGoACAALAAwADAALAA0ADAANAG4AbwAMAG4AbwBuAA8ADwAQAG8AcAAMAG8AcABxAAwAEgAMAHEADgBxAHAAEgBxAHIADgByAHEAcwASAHIAcwBsABIAcwByAHQAFAB0AHIAFAByAA4AEwBzAHQAEwB0AHUAFAB1AHQAdgBzABMAcwB2AGwAEQB2ABMAEQB3AHYAeABsAHYAdgB3AHgAeABtAGwAdwB5AHgAeAB5AG0AdwB6AHkAFQB5AHoAewBtAHkAFQB7AHkAewAAAG0AfAB7ABUAfAAAAHsAfAAOAAAADgB9AAAAfAAUAA4ADgB+AH0AfgAWAH0AFgAXAH0AfgB/ABYAFgAZABcAFgB/ABgAFgAYABoAFgAbABkAHAAaABsAgAAbAB4AHwAbAIAAHwCAACAAIACAAB0AFQCBAHwAFAB8AIEAFACBAIIAFQCDAIEAhAAUAIIAhQCDABUAggCBACEAhACCACEAgwAhAIEAgwAiACEAhAAhACMAgwAkACIAhAAjAIYAhACGACUAJQCGACYAhgAjACYAIwAkACYAgwCHACQAhwAmACQAhQCHAIMAiAAmAIcAhQCIAIcAiQCKAIsAPQCKAIkAPACJAIsAPACLAIwAigCNAIsAjQCMAIsAjgCMAI0AjgA8AIwAjgA+ADwAigA9AI8AigCPAJAAPwCPAD0AkACPAJEAkgCPAD8AkgCRAI8AkgA+AI4AkgCTAJEAkgCOAJMAQACRAJMAjgBAAJMAQQA+AEMAQQBDAJQAlQBBAJQAlQBCAD0AlQCUAJYAlQBEAEIAlgCXAJUAlQCXAEQAlgCYAJcAlgCUAJgAmACUAJkAlABDAJkAmQBDAEUARgBFAEMAmgBGAEMAmgBDAEcAmgCbAEYARgCbAJwASgCcAJsASACbAJoASABKAJsASABEAEoASABCAEQASABJAEIAJwCdAJ4AJwCeAJ8AnQCgAJ4AJwCfACkAoQCgAJ0AJwApACoAoQAsAKAAogAqACkALACjAKAAogApAKQApQCjACwApQCiAKQApQCkAKMApgCnAKgApwA2AKgApgCoAKkALQCnAKYALQAuAKcAMAAtAKYALgCqAKcApwCqADYALgA3AKoAqgA3ADkAOgCqADkAMACmAKsAqwCmAKkAMgAwAKsAOgCsAKoArAA2AKoAOACsADoArACtADYANQCsADgArgCtAKwANQCuAKwArgCvAK0AMwCuADUAsACvAK4AMwCwAK4AMgCwADMAsAA0AK8AMgCxALAAsQA0ALAAMgCrALEAsQAxADQAsQCrAKkAsQCpADEASwBMAE0ASwBNAE4ASwBOAE8AUABRAE4ASwBPAFIASwBSALIAUwCyAFIAUwBSAE8AUwBPAFAAUwBQALMAUwCzAFUAswBQAFQAWQBVALMAtABVAFkAWQCzAFoAtABZAFoAtQC0AFoAtQBaAFsAVwC2AFQAVgBXAFQAVgBUAE0AVgBNAFgAtQBbAFwAXABbAF0AXABdAE0AtQBcALcAXABNAEwAtwBcAEwAXgBfAGAAXgBhAF8AYgBjAGEAYgBkAGMAZQBmAGcAaABlAGcA"), 0.00654268, PackedByteArray("AAABAAIAAAACAAMABAADAAUABAAGAAMAAAADAAYABAAHAAgACAAHAAkACgAAAAYACAALAAwADAALAA0ADgAMAA0ADgANAA8ADwAQAA4AEQAAAAoAEgARAAoAEgAMAA4AEQASABMAEwASABQAEgAOABQAEQAVAAAAFQAOAAAAFQAUAA4ADgAWAAAAFgAXAAAAFgAOABgAFgAZABcAFgAYABoAFgAbABkAHAAaABsAHQAbAB4AHwAbAB0AHwAdACAAFAAVACEAFQAiACEAFAAhACMAFQAkACIAFAAjACUAFQAmACQAJQAjACYAIwAkACYAJwAoACkAJwApACoAKgApACgAKwAoACcALAAqACgAKwAsACgALQAuAC8AMAAtAC8AMAAvADEAMgAwADEAMgAxADMAMQA0ADMAMwA0ADUALgA2AC8ANQA0ADYALgA3ADYANQA2ADgANgA3ADkAOAA2ADoAOgA2ADkAOwA8AD0AOwA+ADwAPwA7AD0AOwA/AEAAPgBAAD8APgA7AEAAQQBCAD0AQQA+AEMAQQBEAEIAQQBDAEUAQQBFAEQARgBFAEMARwBGAEMARwBIAEYASABCAEQASABJAEIASABEAEoARgBIAEoASwBMAE0ASwBNAE4ASwBOAE8AUABRAE4ASwBPAFIAUwBLAFIAUwBSAE8AUwBPAFAAUwBQAFQAUwBUAFUAVgBUAE0AVgBXAFQAVgBNAFgAWQBVAFQAWQBUAFoAVQBZAFoATABVAFoATABaAFsAXABNAEwATABbAFwAXABdAE0AXABbAF0AXgBfAGAAXgBhAF8AYgBjAGEAYgBkAGMAZQBmAGcAaABlAGcA")],
-"material": SubResource("StandardMaterial3D_q7gu5"),
+"material": SubResource("ShaderMaterial_u8rtq"),
 "name": "Standard",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -357,6 +443,9 @@ skeleton = NodePath("")
 
 [node name="Camera3D" parent="." instance=ExtResource("1_adp6o")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 2, -5.49)
+visible = false
 fov = 60.0
-MaxBounceCount = 3
+Visual = 1
 NumRayPerPixel = 5
+accumulate = true
+useSky = true

@@ -3,35 +3,39 @@ extends Node
 @onready var tree : Window = get_tree().root
 
 var rd : RenderingDevice = RenderingServer.get_rendering_device()
-var comp : Resource = preload("res://Scripts/RayTracing_Cam3D/Recursos/ray_data.tres")
+var data : Resource = load("uid://btfdeyfy3a5y0")
 
 @onready var esferas: Node = $Esferas
 @onready var triangulos: Node = $Triangulos
 @onready var ambiente: Node = $Ambiente
 
-func initialize_from_camera(max_bounce, rays_per_pixel, defocus, diverge, focus):
-	comp.MaxBounceCount = max_bounce
-	comp.NumRayPerPixel = rays_per_pixel
-	comp.DefocusStrength = defocus
-	comp.DivergeStrength = diverge
-	comp.FocusDistance = focus
+func initialize_ray_tracing(accumulate, useSky, sunFocus, sunIntensity, sunColor, max_bounce, rays_per_pixel, defocus, diverge, focus):
+	data.accumulate = accumulate
+	data.useSky = useSky
+	data.SunFocus = sunFocus
+	data.SunIntensity = sunIntensity
+	data.sunColor = sunColor
+	data.MaxBounceCount = max_bounce
+	data.NumRayPerPixel = rays_per_pixel
+	data.DefocusStrength = defocus
+	data.DivergeStrength = diverge
+	data.FocusDistance = focus
 	
 	set_up_shader()
-	comp.ready = true
-	ResourceSaver.save(comp, "res://Scripts/RayTracing_Cam3D/Recursos/ray_data.tres")
+	ResourceSaver.save(data, "uid://btfdeyfy3a5y0")
 
 func set_up_shader():
 	## Cria textura de acumulação
 	set_AccumulationTexture()
 	
 	## Procurar esferas da cena e cria buffer de dados
-	esferas.set_SphereBuffer(tree, comp, rd)
+	esferas.set_SphereBuffer(tree, data, rd)
 	
 	## Procurar malhas (!esfera) e cria buffer de dados
-	triangulos.set_MeshesBuffers(tree, comp, rd)
+	triangulos.set_MeshesBuffers(tree, data, rd)
 	
 	## Obtenção de dados do ambiente
-	ambiente.set_Ambiente(tree, comp)
+	ambiente.set_Ambiente(tree, data)
 
 func set_AccumulationTexture():
 	var format := RDTextureFormat.new()
@@ -43,4 +47,8 @@ func set_AccumulationTexture():
 	var a_view := RDTextureView.new()
 
 	var accumulation_texture : RID = rd.texture_create(format, a_view)
-	comp.accu_tex = accumulation_texture
+	data.accu_tex = accumulation_texture
+
+func initialize_depth_view( distance ):
+	data.Distance = distance
+	ResourceSaver.save(data, "uid://btfdeyfy3a5y0")

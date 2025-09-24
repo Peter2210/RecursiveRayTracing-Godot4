@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://c0eow6ndqy5ci"
+path="res://.godot/imported/depth.glsl-74599bcf530abde62d54d94a065f532c.res"
+
+[deps]
+
+source_file="res://Scripts/RayTracing_Cam3D/Compositor/depth.glsl"
+dest_files=["res://.godot/imported/depth.glsl-74599bcf530abde62d54d94a065f532c.res"]
+
+[params]
+

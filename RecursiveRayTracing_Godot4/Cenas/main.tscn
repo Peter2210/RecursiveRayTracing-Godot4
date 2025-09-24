@@ -1,18 +1,16 @@
 [gd_scene load_steps=3 format=3 uid="uid://buc6n5xvo3b5m"]
 
-[ext_resource type="Script" uid="uid://bb0gqyhjc1uev" path="res://Scripts/main.gd" id="1_ruij7"]
-[ext_resource type="PackedScene" uid="uid://c18thrdl8lcxw" path="res://Cenas/caixa_knight.tscn" id="2_74bqr"]
+[ext_resource type="PackedScene" uid="uid://dkuix0sq70fce" path="res://Cenas/raytracing_camera_3d.tscn" id="2_74bqr"]
+[ext_resource type="PackedScene" uid="uid://d2nnho64se87y" path="res://Cenas/sponza_scene.tscn" id="2_ruij7"]
 
 [node name="main" type="Node3D"]
-script = ExtResource("1_ruij7")
-sample_interval = 1.0
-screenshot_interval = 20.0
-max_duration_minutes = 10.0
-output_file = "C:\\Users\\pmell\\Faculdade\\UNIOESTE\\ProjetoTCC\\3-Analise_Testes\\Cena2-Cavaleiro\\godot_performance_data.csv"
-screenshot_folder = "C:\\Users\\pmell\\Faculdade\\UNIOESTE\\ProjetoTCC\\3-Analise_Testes\\Cena2-Cavaleiro\\Godot"
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.320943, -0.947036, -0.0109089, -0.927198, -0.316527, 0.20029, -0.193133, -0.0541663, -0.979675, -0.232845, -2.99681, 3.43473)
-shadow_enabled = true
+transform = Transform3D(0.24187095, -0.8912802, 0.38355964, 0.9487956, 0.30002296, 0.09885942, -0.20318818, 0.3400085, 0.91820955, 7.122818, 1.3900127, 3.43473)
 
-[node name="KnightBox" parent="." instance=ExtResource("2_74bqr")]
+[node name="Camera3D" parent="." instance=ExtResource("2_74bqr")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0.027943015, 2.0371344, -4.073596)
+Visual = 2
+distance = 15.0
+
+[node name="SponzaScene" parent="." instance=ExtResource("2_ruij7")]

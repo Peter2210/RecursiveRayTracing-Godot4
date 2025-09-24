@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://buc6n5xvo3b5m"]
+
+[ext_resource type="PackedScene" uid="uid://c18thrdl8lcxw" path="res://Cenas/caixa_knight.tscn" id="1_x3hk2"]
+
+[node name="main" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.320943, -0.947036, -0.0109089, -0.927198, -0.316527, 0.20029, -0.193133, -0.0541663, -0.979675, -0.232845, -2.99681, 3.43473)
+shadow_enabled = true
+
+[node name="KnightBox" parent="." instance=ExtResource("1_x3hk2")]
