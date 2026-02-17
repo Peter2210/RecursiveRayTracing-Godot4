@@ -11,7 +11,7 @@ The original Ray Tracing logic was made by **Sebastian Lague** in this really gr
 
 ---
 
-## 📌 Goals
+## Goals
 
 - Adapt the recursive ray tracing algorithm to Godot;
 - Study performance under heavy computational loads;
@@ -20,7 +20,7 @@ The original Ray Tracing logic was made by **Sebastian Lague** in this really gr
 
 ---
 
-## 🛠️ Technologies
+## Technologies
 
 - **Godot Engine 4.4.1**
 - **GDScript + GLSL (Compute Shaders)**
